@@ -53,6 +53,19 @@ A frame often holds **two sheets side by side**. After the rotation they stack,
 and you get `sheet0_*` and `sheet1_*`. Both may be different pages of the same
 document — or one may be a duplicate of a neighbouring frame.
 
+**Check the bands are the right way up before reading them.** The frames are
+nearly square (594x613pt), so orientation detection has little to go on and does
+get it wrong. If the text runs vertically, force it:
+
+```sh
+node tools/deskew-page.mjs 236 --rotate 0     # cards already upright
+node tools/deskew-page.mjs 248 --rotate -90   # wide order lying on its side
+```
+
+A tell: when a card frame is wrongly treated as landscape it splits into two
+sheets at `+0.0 deg`, because the two cards read as two horizontal runs. One
+upright sheet with a real skew angle is usually the correct reading.
+
 ### 2. Read the bands in order
 
 Read each band image. Bands overlap slightly so no row falls in a crack.
@@ -60,6 +73,12 @@ Read each band image. Bands overlap slightly so no row falls in a crack.
 If a band comes out unreadable, re-crop that region at higher magnification
 rather than guessing. The film is eighty years old and some frames are damaged
 at the edge; a row you cannot read is a legitimate outcome.
+
+**Duplicated frames are common in this range.** Frame 219 carries the same two
+cards as 218, and 218 is the fainter exposure — worth reading the clean copy and
+correcting the other against it, which is how `Malcolm` turned out to be
+`Mulcahy`. Give the duplicate its own file with `duplicate_of` set and do not
+repeat the rows.
 
 ### 3. Identify what the page is
 

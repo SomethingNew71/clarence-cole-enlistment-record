@@ -5,3 +5,7 @@ node_modules/
 *.log
 tools/.cache/
 .work/
+
+# the source film, symlinked in locally; 63MB and not ours to commit
+cole.pdf
+.venv/
