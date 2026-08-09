@@ -47,27 +47,69 @@
       <h1 class="page-title">The Battalion, by the numbers</h1>
       <div class="page-intro">
         <p class="prose">
-          Two orders, three weeks apart, replaced most of the battalion. On 24 August 1945
-          Special Orders 66 transferred 142 men to the 70th Infantry Division for return to
-          the United States. On 11 September the 29th Infantry Division, which was also
-          going home, assigned 241 of its men to the 153rd. The two orders name 383
-          soldiers.
-        </p>
-        <p class="prose">
-          The point scores explain the exchange. Almost every man leaving on SO 66 had 78 or
-          more. Almost every man arriving on SO 226 had fewer. Men with enough points went
-          home. Men without them were transferred to units that stayed.
-        </p>
-        <p class="prose">
-          Each dot is one man, keyed to his Army serial number. These documents record just
-          one relationship between any two of them — that they held the same military
-          occupational specialty, and so did the same job — so that is what the lines mean.
-          Men who worked alongside each other cluster together.
+          Battery C carried about a hundred and twenty men. The morning report counted them
+          every day and recorded every change in any one of them. Two orders in the autumn
+          of 1945 then replaced most of the battalion around it.
         </p>
       </div>
     </header>
 
     <main class="wrap wrap--tail">
+      <h2 class="section-title">Strength, day by day</h2>
+      <p class="section-intro prose">
+        Enlisted men only, as the card records them: how many were on the roll, and how many
+        were present for duty. The gap between the lines is the men who were not — in
+        hospital, on leave, detached to another unit. The clerk stopped writing the strength
+        line on 12 July 1945, so the chart ends there rather than at the end of the film.
+      </p>
+      <div class="chart" id="strength-chart"></div>
+      <p class="status" id="strength-readout" role="status" aria-live="polite"></p>
+      <p class="legend">
+        <span class="legend__swatch legend__swatch--assigned"></span>assigned
+        <span class="legend__swatch legend__swatch--present"></span>present for duty
+        <span class="legend__swatch legend__swatch--absent"></span>absent
+        <span class="legend__sep"></span
+        ><span
+          >399 days carry a strength line;
+          <a href="/archive/">every card is in the Archive</a>.</span
+        >
+      </p>
+
+      <h2 class="section-title">What happened to the men</h2>
+      <p class="section-intro prose">
+        Every status change the clerk wrote on a card, sorted by the words he used. These are
+        entries, not men: a man who went to hospital and came back is counted twice. Hover a
+        bar to see one of the entries behind it, in his wording.
+      </p>
+      <div class="hbars" id="actions-chart"></div>
+      <p class="legend">
+        568 entries across 495 cards. Two could not be sorted and are shown as such.
+      </p>
+
+      <h2 class="section-title">Wounded and killed</h2>
+      <p class="section-intro prose">
+        Seven men wounded or injured, and two killed. That is all the film records, quoted
+        as the clerk wrote it. Two of the entries are corrections filed weeks later, and
+        carry the date of the day they describe rather than the card they appear on.
+      </p>
+      <div id="casualties"></div>
+
+      <h2 class="section-title">The two orders</h2>
+      <p class="section-intro prose">
+        Two orders, three weeks apart, replaced most of the battalion. On 24 August 1945
+        Special Orders 66 transferred 142 men to the 70th Infantry Division for return to the
+        United States. On 11 September the 29th Infantry Division, which was also going home,
+        assigned 241 of its men to the 153rd. The two orders name 383 soldiers. The point
+        scores explain the exchange: almost every man leaving on SO 66 had 78 or more, almost
+        every man arriving on SO 226 had fewer. Men with enough points went home. Men without
+        them were transferred to units that stayed.
+      </p>
+      <p class="section-intro prose">
+        Each dot is one man, keyed to his Army serial number. These documents record just one
+        relationship between any two of them — that they held the same military occupational
+        specialty, and so did the same job — so that is what the lines mean. Men who worked
+        alongside each other cluster together.
+      </p>
       <div class="graph-controls">
         <div class="filters filters--tight" role="group" aria-label="Filter by order">
           <button type="button" class="chip is-on" data-doc="all">Both orders</button>
@@ -95,9 +137,12 @@
         <span class="legend__dot band-2"></span>80–89
         <span class="legend__dot band-3"></span>90–99
         <span class="legend__dot band-4"></span>100+
-        <span class="legend__sep"></span>points. Officers are open rings — their rating was
-        scored on a different scale. Everything from the September order is a first-pass
-        reading; use <em>Sent in, September</em> above to see exactly which men that is.
+        <span class="legend__sep"></span
+        ><span
+          >points. Officers are open rings — their rating was scored on a different scale.
+          Everything from the September order is a first-pass reading; use
+          <em>Sent in, September</em> above to see exactly which men that is.</span
+        >
       </p>
 
       <aside class="callout callout--narrow" id="graph-note"></aside>

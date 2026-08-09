@@ -17,6 +17,7 @@ const IN_THEATER = (p) => p.lon > -6 && p.lon < 16 && p.lat > 43 && p.lat < 55;
 async function main() {
   const data = await loadJSON("/data/timeline.json");
   renderRecord(data);
+  renderEnlistmentCard(data);
   renderAttachment(data);
   renderCampaigns(data);
   renderCrossing(data);
@@ -53,13 +54,31 @@ function renderRecord({ subject }) {
     ],
   ].filter(([, value]) => value);
 
-  host.replaceChildren(
-    ...rows.map(([label, value]) => {
-      const wrap = document.createElement("div");
-      wrap.append(el("dt", null, label), el("dd", null, value));
-      return wrap;
-    }),
-  );
+  host.replaceChildren(...definitionList(rows));
+}
+
+function definitionList(rows) {
+  return rows.map(([label, value]) => {
+    const wrap = document.createElement("div");
+    wrap.append(el("dt", null, label), el("dd", null, value));
+    return wrap;
+  });
+}
+
+/**
+ * The enlistment card, decoded. The Army wrote it in numbers — a state, a
+ * county, a place, a trade, all as codes — so each row carries the code it was
+ * read from, and a row whose code cannot be resolved says so.
+ */
+function renderEnlistmentCard({ subject }) {
+  const host = document.getElementById("enlistment-card");
+  const card = subject.enlistmentCard;
+  if (!host || !card) return;
+
+  host.replaceChildren(...definitionList(card.fields));
+
+  const note = document.getElementById("enlistment-card-note");
+  if (note) note.textContent = card.film;
 }
 
 /** Chain of command on each date we can source one for. */

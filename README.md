@@ -50,15 +50,39 @@ Recorded as data in `timeline.json` → `crossReferences`, not just asserted her
   the northern shoulder of the Bulge.
 - Neither special order carries a battery column, so neither can place a man in
   Battery C on its own. Cross-matching serials against the Battery C morning
-  reports resolves **19 of the 383** — 13 confirmed on an exact match, 6 probable
-  where the two readings differ by a digit or two. None of the 241 men on SO 226
-  match, which is what you would expect: they arrived in September, after the
-  transcribed cards end.
+  reports resolves **41 of the 383** — 32 confirmed on an exact match, 9 probable
+  where the two readings differ by a digit or two. Twelve of the 241 men on
+  SO 226 match, which is fewer than the order's length suggests: they arrived in
+  September, at the end of the transcribed run.
 
 The cross-reference has also caught real errors in both directions. The
 independent reading of SO 66 corrected `35013798` from *Kolosxi* to **McKoski**
 in the morning-report transcription, and exposed an internal inconsistency where
 the same man was written *Frehnheiser* on one card and *Frohnheiser* on another.
+
+A third source now checks the same field from outside the film. The Archives
+hold a punch card for nearly every man who entered the Army between 1938 and
+1946, converted to a data file of 9,200,232 records keyed on serial number
+(NARA ID 1263923). `npm run check:serials` looks up all 524 serials read off the
+transcriptions and writes `data/nara-asn-crosscheck.json`.
+
+| | |
+| --- | --- |
+| land on a card of the same name | 198 |
+| same man, spelt differently | 60 |
+| land on a different man | 100 |
+| no card of that serial | 166 |
+
+For 62 of the disagreements the man named on the film is on a card one or two
+digits from the serial as read, which names the column to re-read. Verified
+Special Orders 66 produces those at 11 per cent of its checkable serials;
+first-pass Special Orders 226 at 25 — the clearest measure yet of what a second
+reading is worth.
+
+Nothing it finds has been applied. A missing card is not a disagreement: a sixth
+of the cards were lost before conversion. And the card file has its own errors —
+NARA compared 377 records against the original punch cards and found 5 serials
+and 18 names wrong. The film decides; the check says where to look.
 
 ## Running it
 
@@ -92,7 +116,8 @@ public/                   everything served
   assets/story.js         the discharge record, both maps, the campaign bars
   assets/timeline.js      the merged event list and its filters
   assets/maps.js          the positions map; frames sheets.js
-  assets/battalion.js     wires graph.js and writes the two notes under it
+  assets/battalion.js     wires battery.js and graph.js, and the notes under them
+  assets/battery.js       Battery C's strength line, status changes and casualties
   assets/archive.js       the documents and the sources; fires record.js
   assets/lib/format.js    dates and small DOM helpers, shared by the rooms
   assets/lib/atlas.js     the themed Leaflet map, and which labels can be pinned
@@ -104,6 +129,7 @@ public/                   everything served
   assets/vendor/          Leaflet 1.9.4, vendored — no CDN
   data/timeline.json      curated events + events built from the film
   data/morning-reports.json  generated — the complete daily record
+  data/battery.json       generated — strength by day, status changes by kind
   data/roster.json        generated from transcriptions/ — do not edit
   data/map-sheets.json    generated — sheets named, positions decoded
   data/weather.json       generated — modelled weather, keyed by date
@@ -120,6 +146,9 @@ tools/fetch-weather.mjs   the one-time ERA5 pull (the only tool using the networ
 tools/build-weather.mjs   data/weather.json -> public/data/weather.json
 tools/derive-grid-squares.mjs  recovers the lettered squares from the reports
 tools/compare-transcription.mjs  second-reader diff for a page
+tools/nara-asn-crosscheck.mjs  every serial against the Archives' card file
+data/nara-asn-crosscheck.json  its result, committed so the download is optional
+tools/nara-catalog-grep.mjs  searches NARA's catalogue export, OCR included
 tools/deskew-page.mjs     straightened, banded images for a page
 tools/check-data.mjs      validates timeline.json
 ```
@@ -404,17 +433,22 @@ push; a second deploy path would race it. The workflow carries a commented
 ## Still to do
 
 - Second-read the morning-report cards; only frames 218 and 219 have been through
-  `verify-transcription`
+  `verify-transcription`. `npm run check:serials` names 16 rows on the others
+  where the serial disagrees with the Archives' card file
 - Second-read Special Orders 226, frames 265–270, and resolve the twenty-four
-  incomplete serials
+  incomplete serials. `check:serials` flags 39 of its 158 checkable serials as
+  one or two digits from a card of the same man, against 11 per cent on verified
+  Special Orders 66
 - Adjudicate the nine `probable` Battery C matches, where the two readings of a
   serial differ by a digit or two: Andrews, Griffith, Adams, Lee, Mays, Holland,
   Agee, Cole (James E), Hickman
 - The Bronze Star general orders number and award date. **Confirmed absent from
-  all 284 frames**, which leaves the battalion's general orders at NARA
+  all 284 frames.** Two places to look, both now identified by file designator —
+  see *The battalion's own records at College Park* below
 - The battalion's calibre, stated rather than inferred. `unit.weapon` reads the
   evidence as tractor-drawn medium or heavy artillery and says plainly that this
-  is an inference
+  is an inference. `FABN-153-0.1`, the battalion's own unit history, would settle
+  it, and there is a candidate reading already — see below
 - Re-read the 13 disputed grid references on the film. Each decodes cleanly to a
   place the same line contradicts, and a second reading would settle whether the
   letters or the place name is the error
@@ -426,6 +460,69 @@ push; a second deploy path would race it. The workflow carries a commented
   Camp Pittsburgh spellings, "Nord de Guerre Zone (Germany)", "Hershausen
   wG8188", "Enroute To Assembly Area", "Calas Staging Area". They carry no place
   on the timeline and no weather. Rerun `weather:fetch` once they resolve
+
+## The battalion's own records at College Park
+
+The National Archives publish their whole catalogue as a bulk export on S3,
+`s3://nara-national-archives-catalog` (us-east-2, public, no credentials). It is
+JSONL by record group, and it carries a field the Catalog API does not search:
+`extractedText`, the OCR of every digitised page.
+
+```sh
+node tools/nara-catalog-grep.mjs 407 'FABN.?153-|FAGP.?79-0'
+```
+
+That streams RG 407 — 12.3 GB, about ninety seconds — and finds the index card
+for the battalion in the *Index to World War II Operations Reports*:
+
+```
+153rd Field Arty Bn
+  FABN-153-0.1    History 15 Nov 42 – Nov 45
+  FABN-153-0.3    A/A Rpt – Jun 44, Apr, Jun, Aug 45      (item 5071)
+  FABN-153-1.13   General Orders 1943–45
+```
+
+The same sweep gives the parent formations the site already names on other
+evidence, and the box list from the series description:
+
+```
+79th Field Artillery Group          Boxes 16576–16578
+  FAGP-79-0.1     Unit History Jun 1940 – Jun 1946
+  FAGP-79-0.3     After Action Rpt w/ Jnl May–Jul 45
+  FAGP-79-0.7     Unit Jnl Jul–Sep 44, May 45             (item 48786)
+  FAGP-79-1.13    General Orders 1942–43, 45–46
+
+32nd Field Artillery Brigade        Boxes 16480–16484
+  FABR-32-0.3     Rpt w/ Unit Journal 18 Jun 44 – May 45  (item 49524)
+  FABR-32-1.13    General Orders – 14 May 45              (item 49161)
+```
+
+**Box 15969** covers `FABN-148-0.3 June 1944` through `FABN-154-0.7 January 1946`,
+so all three battalion files sit in it. None of this is digitised; it is ordered
+or read on site at College Park. `FABN-153-1.13` and `FABR-32-1.13` are the two
+places the Bronze Star order should be.
+
+### One identification to settle first
+
+The same OCR sweep turns up a 153rd Field Artillery Battalion in the 1st Cavalry
+Division's own after-action reports:
+
+> On 15 November 1942 the 153d Field Artillery Battalion (105mm Howitzer)
+> Motorized was formed at Fort Bliss, Texas. Cadres were furnished from the 61st
+> and 82nd Field Artillery … This Battalion never returned to the 1st Cavalry
+> Division.
+
+and, separately, that it was "relieved from assignment to the 1st Cavalry
+Division and reassigned to the Third Army". The index card above dates our
+battalion's history from the same day, 15 November 1942, and ours was
+non-divisional in the ETO — which fits a battalion stripped off a division and
+handed to an army.
+
+Against that, the same sweep finds "153rd FA Bn" in XI Corps and 32nd Infantry
+Division records on Leyte in late 1944, when Battery C was in Germany. Those may
+be OCR errors for another number, or a second unit. **Do not carry the 105mm
+reading into `unit.weapon` until the identification is settled.** `FABN-153-0.1`
+settles it, and that is the first thing to read in Box 15969.
 
 ## History
 

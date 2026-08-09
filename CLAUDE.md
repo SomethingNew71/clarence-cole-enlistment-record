@@ -24,6 +24,11 @@ front matter deciding which builder reads it. `public/data/timeline.json` holds
 destroyed and rebuilt by `npm run build:timeline`. Editing one in `timeline.json`
 loses the change on the next build. Edit the page file.
 
+`build:timeline` also writes `public/data/battery.json` — the daily strength line
+and every status change sorted by the clerk's own wording. It is wholly generated
+and holds nothing hand-authored, so it is rebuilt from scratch each run: edit the
+page files or the `ACTION_KINDS` table in the builder, never the JSON.
+
 **The build must never touch hand-authored events.** `build-timeline.mjs` filters
 on the `generated` flag alone. If you change that filter you can silently delete
 the discharge, the citation and Special Orders 66 — the parts with no other copy.
@@ -119,10 +124,15 @@ There is no template step, so a change to the shared chrome is a change to seven
 files including `404.html`. That is the price of having no build; do not
 introduce one to avoid it.
 
-`assets/style.css` is the whole design system and the only stylesheet. Four of
-the modules — `graph.js`, `record.js`, `sheets.js`, `lib/weather.js` — emit their
-own markup and are restyled entirely through the class names they already write.
-Do not edit them to change how something looks.
+`assets/style.css` is the whole design system and the only stylesheet. Five of
+the modules — `graph.js`, `record.js`, `sheets.js`, `battery.js`,
+`lib/weather.js` — emit their own markup and are restyled entirely through the
+class names they already write. Do not edit them to change how something looks.
+
+`battery.js` is the exception to that in one respect: its strength chart is sized
+in JavaScript, at the container's measured pixel width, and redrawn on resize. A
+fixed viewBox scaled by CSS renders an 11px label at 5px on a phone. Changing the
+chart's size is a change to that module, not to the stylesheet.
 
 `.weather` deliberately does not look like `.entry__verbatim`. The verbatim block
 carries a solid accent rule and is the document's own words; the weather line
@@ -321,3 +331,17 @@ Matching the orders against the morning reports on serial number has already
 corrected `35013798` from *Kolosxi* to *McKoski* and caught the same man written
 *Frehnheiser* and *Frohnheiser* on different cards. When the two sources disagree,
 that is a finding to adjudicate against the film — not noise to smooth over.
+
+`npm run check:serials` widens that to a source outside the film: the Army Serial
+Number Electronic File, the Archives' converted punch cards for every man
+entering the Army 1938–46, keyed on serial number. It reads 524 serials off the
+transcriptions and finds 62 where the man named is on a card one or two digits
+from the serial as read — which names the column to re-read. Verified Special
+Orders 66 produces those at 11 per cent; first-pass Special Orders 226 at 25.
+
+Nothing it finds is applied. Findings live in `data/nara-asn-crosscheck.json` and
+in the comments files for the pages they affect, as candidates for a re-read. A
+missing card means nothing — a sixth of the cards were lost before conversion —
+and the card file has its own error rate, which NARA measured and publishes.
+Neither source outranks the other; the film decides, and the tool says where to
+look.
