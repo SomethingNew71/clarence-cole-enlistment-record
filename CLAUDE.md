@@ -271,6 +271,21 @@ Working from the source PDF: `cole.pdf` is gitignored and symlinked in locally �
 63 MB, and not ours to commit. `tools/deskew-page.mjs` renders and straightens a
 frame; pass `--rotate 0` when a card frame comes out sideways.
 
+**The auto-rotation can be confidently wrong.** On frame 269 it picks the
+sideways orientation and reports `+0.0 deg` for it, because it maximises row-ink
+variance and the sideways image scores well. The real sheet is `--rotate -90` at
+`+1.2 deg` — and that 1.2 degrees had already shifted the MOS column against the
+names for two rows. A suspiciously clean `+0.0 deg` is a reason to try the other
+rotation, not a reassurance.
+
+**Rendering a frame larger does not make it more legible.** The embedded scans
+are about 1813 × 1802 pixels for a whole sheet, so `deskew-page.mjs` at scale 4.2
+is already past native and anything beyond it is interpolation that reads as
+sharpness while carrying no more information. To squeeze a damaged row, pull the
+embedded bitmap out of the PDF and upscale once from that. Where a serial is
+illegible but the MOS and ASR beside it are crisp, the carbon failed and there is
+nothing under the smear — no amount of re-cropping will recover it.
+
 ## On Sergeant Cole
 
 The film names him on three frames, all from the occupation: 243 (20 August 1945,
@@ -334,10 +349,16 @@ that is a finding to adjudicate against the film — not noise to smooth over.
 
 `npm run check:serials` widens that to a source outside the film: the Army Serial
 Number Electronic File, the Archives' converted punch cards for every man
-entering the Army 1938–46, keyed on serial number. It reads 524 serials off the
-transcriptions and finds 62 where the man named is on a card one or two digits
-from the serial as read — which names the column to re-read. Verified Special
-Orders 66 produces those at 11 per cent; first-pass Special Orders 226 at 25.
+entering the Army 1938–46, keyed on serial number. It reads 556 serials off the
+transcriptions and finds 49 where the man named is on a card one or two digits
+from the serial as read — which names the column to re-read. As a share of each
+source's checkable serials: twice-read Special Orders 66, 6 per cent; the morning
+reports, 10; Special Orders 226, 18.
+
+**Recompute those figures, never quote them.** They come from
+`data/nara-asn-crosscheck.json`, they move whenever a page is re-read or
+completed, and both the README and the p265 comments have carried a stale set
+already — one that disagreed with the JSON committed beside it.
 
 Nothing it finds is applied. Findings live in `data/nara-asn-crosscheck.json` and
 in the comments files for the pages they affect, as candidates for a re-read. A

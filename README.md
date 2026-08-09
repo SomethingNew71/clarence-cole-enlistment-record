@@ -19,12 +19,21 @@ Transcribed from the film:
 | --- | --- | --- |
 | 1–247, 253–264, 271–284 | Battery C morning reports — 495 daily reports, 2 May 1944 to 10 October 1945 | first pass, except frames 218 and 219 |
 | 248–252 | Special Orders 66 — 142 men out, to the 70th Inf Div | verified |
-| 265–270 | Special Orders 226 — 241 men in, from the 29th Inf Div | first pass |
+| 265–270 | Special Orders 226 — 276 men in, from the 29th Inf Div | second read, unresolved serials |
 
-All 284 frames are transcribed. What remains is the second reading. Frames 218
-and 219 are the same two cards photographed twice, read against each other, and
-verified; every other morning-report card is a first pass, as is Special Orders
-226, where twenty-four men still have an incomplete serial number.
+All 284 frames are transcribed. Frames 218 and 219 are the same two cards
+photographed twice, read against each other, and verified; every morning-report
+card is otherwise a first pass.
+
+Special Orders 226 has been through a second reading of its MOS and ASR columns
+against the film. It stays `verified: false` because twenty-seven men still have
+an incomplete serial number, and those cannot be resolved from this scan —
+[`transcriptions/p269-comments.md`](transcriptions/p269-comments.md) sets out
+why, and what would be needed instead.
+
+Do not quote the figures in this table from memory. `npm run build:roster` and
+`npm run build:timeline` count the files and print the current numbers; the
+counts above went stale twice before that habit stuck.
 
 Four primary sources, all agreeing where they overlap:
 
@@ -50,8 +59,8 @@ Recorded as data in `timeline.json` → `crossReferences`, not just asserted her
   the northern shoulder of the Bulge.
 - Neither special order carries a battery column, so neither can place a man in
   Battery C on its own. Cross-matching serials against the Battery C morning
-  reports resolves **41 of the 383** — 32 confirmed on an exact match, 9 probable
-  where the two readings differ by a digit or two. Twelve of the 241 men on
+  reports resolves **41 of the 418** — 32 confirmed on an exact match, 9 probable
+  where the two readings differ by a digit or two. Twelve of the 276 men on
   SO 226 match, which is fewer than the order's length suggests: they arrived in
   September, at the end of the transcribed run.
 
@@ -63,21 +72,24 @@ the same man was written *Frehnheiser* on one card and *Frohnheiser* on another.
 A third source now checks the same field from outside the film. The Archives
 hold a punch card for nearly every man who entered the Army between 1938 and
 1946, converted to a data file of 9,200,232 records keyed on serial number
-(NARA ID 1263923). `npm run check:serials` looks up all 524 serials read off the
+(NARA ID 1263923). `npm run check:serials` looks up all 556 serials read off the
 transcriptions and writes `data/nara-asn-crosscheck.json`.
 
 | | |
 | --- | --- |
-| land on a card of the same name | 198 |
-| same man, spelt differently | 60 |
-| land on a different man | 100 |
-| no card of that serial | 166 |
+| land on a card of the same name | 215 |
+| same man, spelt differently | 64 |
+| land on a different man | 101 |
+| no card of that serial | 176 |
 
-For 62 of the disagreements the man named on the film is on a card one or two
-digits from the serial as read, which names the column to re-read. Verified
-Special Orders 66 produces those at 11 per cent of its checkable serials;
-first-pass Special Orders 226 at 25 — the clearest measure yet of what a second
-reading is worth.
+For 49 of the disagreements the man named on the film is on a card one or two
+digits from the serial as read, which names the column to re-read. As a share of
+each source's checkable serials: Special Orders 66, read twice, 4 of 63; the
+morning reports, 14 of 146; Special Orders 226, 31 of 171. Six per cent against
+ten and eighteen — the clearest measure yet of what a second reading is worth.
+
+Recompute those figures from `data/nara-asn-crosscheck.json` rather than quoting
+them; every number in this section has been stale at least once.
 
 Nothing it finds has been applied. A missing card is not a disagreement: a sixth
 of the cards were lost before conversion. And the card file has its own errors —
@@ -433,12 +445,21 @@ push; a second deploy path would race it. The workflow carries a commented
 ## Still to do
 
 - Second-read the morning-report cards; only frames 218 and 219 have been through
-  `verify-transcription`. `npm run check:serials` names 16 rows on the others
+  `verify-transcription`. `npm run check:serials` names the rows on the others
   where the serial disagrees with the Archives' card file
-- Second-read Special Orders 226, frames 265–270, and resolve the twenty-four
-  incomplete serials. `check:serials` flags 39 of its 158 checkable serials as
-  one or two digits from a card of the same man, against 11 per cent on verified
-  Special Orders 66
+- Re-read the Special Orders 226 serials that `check:serials` flags as one or two
+  digits from a card of the same man. All six frames have now had their grades,
+  names, serials, MOS and ASR checked against the film — that pass found a
+  two-row shift on 269, an eight-row shift on 268 and two errors on 270 — but it
+  compared the film against the committed table rather than reading it blind, so
+  the flags stay `verified: false`. The card file gives the *column* to look at,
+  which is the thing a second reading of the film alone does not
+- **Get a better scan of frames 265–270.** The twenty-seven incomplete serials on
+  SO 226 cannot be resolved from the present one. The embedded image is
+  1813 × 1802 pixels for a whole sheet, the carbon failed across the serial
+  column while the columns beside it stayed crisp, and none of those men appears
+  in the Battery C morning reports, so there is no second source. This is a
+  fetch-something-new task, not a read-harder one
 - Adjudicate the nine `probable` Battery C matches, where the two readings of a
   serial differ by a digit or two: Andrews, Griffith, Adams, Lee, Mays, Holland,
   Agee, Cole (James E), Hickman

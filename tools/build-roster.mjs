@@ -104,6 +104,25 @@ for (const { file, page: expected, meta, body } of files) {
       if (flags.length) person.uncertain = flags;
     }
 
+    // Army serial numbers have a shape: seven or eight digits for enlisted men,
+    // an O prefix and six or seven for officers. A reading outside that is wrong
+    // whatever its digits say, and a partial one hides it — p269 carried
+    // "3?07?0968" for nine characters until the second read measured the field.
+    // Cheap to check, and it catches the class of error rather than the instance.
+    const bare = person.asn.replace(/^O-?/i, "");
+    const width = person.officer ? [6, 7] : [7, 8];
+    if (!width.includes(bare.length)) {
+      errors.push(
+        `${file}: ${person.name} — serial "${person.asn}" is ${bare.length} characters; ` +
+          `${person.officer ? "officer" : "enlisted"} numbers are ${width.join(" or ")}`,
+      );
+      continue;
+    }
+    if (!/^[0-9?]+$/.test(bare)) {
+      errors.push(`${file}: ${person.name} — serial "${person.asn}" has a non-digit`);
+      continue;
+    }
+
     // A serial number that cannot be fully read is not an identity key, so it
     // is kept out of the cross-check rather than colliding with other rows.
     if (person.asn.includes("?")) {

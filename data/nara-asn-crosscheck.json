@@ -103,9 +103,9 @@
   },
   "control": {
     "fullName": {
-      "serialsKnownRight": 187,
+      "serialsKnownRight": 204,
       "withANearMiss": 2,
-      "cardsOfTheSameName": 16109
+      "cardsOfTheSameName": 16811
     },
     "surnameOnly": {
       "serialsKnownRight": 11,
@@ -114,10 +114,10 @@
     }
   },
   "counts": {
-    "agree": 198,
-    "spelling": 60,
-    "disagree": 100,
-    "absent": 166
+    "agree": 215,
+    "spelling": 64,
+    "disagree": 101,
+    "absent": 176
   },
   "agree": [
     {
@@ -1027,6 +1027,44 @@
       "sameNameInFile": 999
     },
     {
+      "asn": "20745434",
+      "film": [
+        {
+          "page": 265,
+          "document": "SO 226",
+          "name": "Lockwood, Leonard R"
+        }
+      ],
+      "card": {
+        "raw": "20745434LOCKWOOD LEONARD R      770037785010441PVT 8FA 30 1   77719123166691804 03603.81 ",
+        "asn": "20745434",
+        "name": "LOCKWOOD LEONARD R",
+        "residenceState": "77",
+        "residenceCounty": "003",
+        "placeOfEnlistment": "7785",
+        "dateOfEnlistment": "010441",
+        "gradeAlpha": "PVT",
+        "gradeCode": "8",
+        "branchAlpha": "FA",
+        "branchCode": "30",
+        "termOfEnlistment": "1",
+        "source": "7",
+        "nativity": "77",
+        "yearOfBirth": "19",
+        "race": "1",
+        "education": "2",
+        "civilianOccupation": "316",
+        "maritalStatus": "6",
+        "height": "69",
+        "weight": "180",
+        "component": "4",
+        "roll": "0360",
+        "frame": "3.81"
+      },
+      "nameAgreement": 1,
+      "sameNameInFile": 5
+    },
+    {
       "asn": "31013826",
       "film": [
         {
@@ -1141,6 +1179,44 @@
       "sameNameInFile": 46
     },
     {
+      "asn": "31059745",
+      "film": [
+        {
+          "page": 265,
+          "document": "SO 226",
+          "name": "Melledy, Paul R"
+        }
+      ],
+      "card": {
+        "raw": "31059745MELLEDY PAUL R          130251328150142PVT 8BI 00 5   01316141056671347 03893.110",
+        "asn": "31059745",
+        "name": "MELLEDY PAUL R",
+        "residenceState": "13",
+        "residenceCounty": "025",
+        "placeOfEnlistment": "1328",
+        "dateOfEnlistment": "150142",
+        "gradeAlpha": "PVT",
+        "gradeCode": "8",
+        "branchAlpha": "BI",
+        "branchCode": "00",
+        "termOfEnlistment": "5",
+        "source": "0",
+        "nativity": "13",
+        "yearOfBirth": "16",
+        "race": "1",
+        "education": "4",
+        "civilianOccupation": "105",
+        "maritalStatus": "6",
+        "height": "67",
+        "weight": "134",
+        "component": "7",
+        "roll": "0389",
+        "frame": "3.110"
+      },
+      "nameAgreement": 1,
+      "sameNameInFile": 1
+    },
+    {
       "asn": "31168359",
       "film": [
         {
@@ -1177,6 +1253,82 @@
       },
       "nameAgreement": 1,
       "sameNameInFile": 108
+    },
+    {
+      "asn": "31194035",
+      "film": [
+        {
+          "page": 265,
+          "document": "SO 226",
+          "name": "Hill, Thomas L"
+        }
+      ],
+      "card": {
+        "raw": "31194035HILL THOMAS L           110111143091042PVT 8BI 00 5   01116136056671587 04073.129",
+        "asn": "31194035",
+        "name": "HILL THOMAS L",
+        "residenceState": "11",
+        "residenceCounty": "011",
+        "placeOfEnlistment": "1143",
+        "dateOfEnlistment": "091042",
+        "gradeAlpha": "PVT",
+        "gradeCode": "8",
+        "branchAlpha": "BI",
+        "branchCode": "00",
+        "termOfEnlistment": "5",
+        "source": "0",
+        "nativity": "11",
+        "yearOfBirth": "16",
+        "race": "1",
+        "education": "3",
+        "civilianOccupation": "605",
+        "maritalStatus": "6",
+        "height": "67",
+        "weight": "158",
+        "component": "7",
+        "roll": "0407",
+        "frame": "3.129"
+      },
+      "nameAgreement": 1,
+      "sameNameInFile": 215
+    },
+    {
+      "asn": "31288813",
+      "film": [
+        {
+          "page": 265,
+          "document": "SO 226",
+          "name": "Fournier, Emilien A"
+        }
+      ],
+      "card": {
+        "raw": "31288813FOURNIER EMILIEN A      231131375190443PVT 8NO 42 5   0K916J03166600607 04213.143",
+        "asn": "31288813",
+        "name": "FOURNIER EMILIEN A",
+        "residenceState": "23",
+        "residenceCounty": "113",
+        "placeOfEnlistment": "1375",
+        "dateOfEnlistment": "190443",
+        "gradeAlpha": "PVT",
+        "gradeCode": "8",
+        "branchAlpha": "NO",
+        "branchCode": "42",
+        "termOfEnlistment": "5",
+        "source": "0",
+        "nativity": "K9",
+        "yearOfBirth": "16",
+        "race": "J",
+        "education": "0",
+        "civilianOccupation": "316",
+        "maritalStatus": "6",
+        "height": "60",
+        "weight": "060",
+        "component": "7",
+        "roll": "0421",
+        "frame": "3.143"
+      },
+      "nameAgreement": 1,
+      "sameNameInFile": 1
     },
     {
       "asn": "31293564",
@@ -1695,6 +1847,44 @@
       "sameNameInFile": 2
     },
     {
+      "asn": "32854629",
+      "film": [
+        {
+          "page": 265,
+          "document": "SO 226",
+          "name": "Halen, Kenneth R"
+        }
+      ],
+      "card": {
+        "raw": "32854629HALEN KENNETH R         230312390260343PVT 8NO 02 5   01616106366550947 05742.238",
+        "asn": "32854629",
+        "name": "HALEN KENNETH R",
+        "residenceState": "23",
+        "residenceCounty": "031",
+        "placeOfEnlistment": "2390",
+        "dateOfEnlistment": "260343",
+        "gradeAlpha": "PVT",
+        "gradeCode": "8",
+        "branchAlpha": "NO",
+        "branchCode": "02",
+        "termOfEnlistment": "5",
+        "source": "0",
+        "nativity": "16",
+        "yearOfBirth": "16",
+        "race": "1",
+        "education": "0",
+        "civilianOccupation": "636",
+        "maritalStatus": "6",
+        "height": "55",
+        "weight": "094",
+        "component": "7",
+        "roll": "0574",
+        "frame": "2.238"
+      },
+      "nameAgreement": 1,
+      "sameNameInFile": 1
+    },
+    {
       "asn": "32872387",
       "film": [
         {
@@ -1733,6 +1923,44 @@
       "sameNameInFile": 1
     },
     {
+      "asn": "32899337",
+      "film": [
+        {
+          "page": 265,
+          "document": "SO 226",
+          "name": "Brennan, James E"
+        }
+      ],
+      "card": {
+        "raw": "32899337BRENNAN JAMES E         230472364290443PVT 8NO 02 5   02315106783991097 05812.245",
+        "asn": "32899337",
+        "name": "BRENNAN JAMES E",
+        "residenceState": "23",
+        "residenceCounty": "047",
+        "placeOfEnlistment": "2364",
+        "dateOfEnlistment": "290443",
+        "gradeAlpha": "PVT",
+        "gradeCode": "8",
+        "branchAlpha": "NO",
+        "branchCode": "02",
+        "termOfEnlistment": "5",
+        "source": "0",
+        "nativity": "23",
+        "yearOfBirth": "15",
+        "race": "1",
+        "education": "0",
+        "civilianOccupation": "678",
+        "maritalStatus": "3",
+        "height": "99",
+        "weight": "109",
+        "component": "7",
+        "roll": "0581",
+        "frame": "2.245"
+      },
+      "nameAgreement": 1,
+      "sameNameInFile": 211
+    },
+    {
       "asn": "32900464",
       "film": [
         {
@@ -1769,6 +1997,44 @@
       },
       "nameAgreement": 1,
       "sameNameInFile": 9
+    },
+    {
+      "asn": "32901511",
+      "film": [
+        {
+          "page": 265,
+          "document": "SO 226",
+          "name": "Tensel, Arthur J"
+        }
+      ],
+      "card": {
+        "raw": "32901511TENSEL ARTHUR J         230812364030543PVT 8NO 02 5   0M706104712060787 05812.245",
+        "asn": "32901511",
+        "name": "TENSEL ARTHUR J",
+        "residenceState": "23",
+        "residenceCounty": "081",
+        "placeOfEnlistment": "2364",
+        "dateOfEnlistment": "030543",
+        "gradeAlpha": "PVT",
+        "gradeCode": "8",
+        "branchAlpha": "NO",
+        "branchCode": "02",
+        "termOfEnlistment": "5",
+        "source": "0",
+        "nativity": "M7",
+        "yearOfBirth": "06",
+        "race": "1",
+        "education": "0",
+        "civilianOccupation": "471",
+        "maritalStatus": "2",
+        "height": "06",
+        "weight": "078",
+        "component": "7",
+        "roll": "0581",
+        "frame": "2.245"
+      },
+      "nameAgreement": 1,
+      "sameNameInFile": 1
     },
     {
       "asn": "32918019",
@@ -1850,6 +2116,44 @@
       },
       "nameAgreement": 1,
       "sameNameInFile": 6
+    },
+    {
+      "asn": "32925644",
+      "film": [
+        {
+          "page": 265,
+          "document": "SO 226",
+          "name": "Gronning, Norman S"
+        }
+      ],
+      "card": {
+        "raw": "32925644GRONNING NORMAN S       220072252020643PVT 8NO 02 5   02217145132361217 05852.249",
+        "asn": "32925644",
+        "name": "GRONNING NORMAN S",
+        "residenceState": "22",
+        "residenceCounty": "007",
+        "placeOfEnlistment": "2252",
+        "dateOfEnlistment": "020643",
+        "gradeAlpha": "PVT",
+        "gradeCode": "8",
+        "branchAlpha": "NO",
+        "branchCode": "02",
+        "termOfEnlistment": "5",
+        "source": "0",
+        "nativity": "22",
+        "yearOfBirth": "17",
+        "race": "1",
+        "education": "4",
+        "civilianOccupation": "513",
+        "maritalStatus": "2",
+        "height": "36",
+        "weight": "121",
+        "component": "7",
+        "roll": "0585",
+        "frame": "2.249"
+      },
+      "nameAgreement": 1,
+      "sameNameInFile": 1
     },
     {
       "asn": "33021630",
@@ -4265,6 +4569,44 @@
       "sameNameInFile": 1
     },
     {
+      "asn": "33684630",
+      "film": [
+        {
+          "page": 265,
+          "document": "SO 226",
+          "name": "Power, Harry E"
+        }
+      ],
+      "card": {
+        "raw": "33684630POWER HARRY E           321253298240443PVT 8NO 02 5   03906140876334447 06941.211",
+        "asn": "33684630",
+        "name": "POWER HARRY E",
+        "residenceState": "32",
+        "residenceCounty": "125",
+        "placeOfEnlistment": "3298",
+        "dateOfEnlistment": "240443",
+        "gradeAlpha": "PVT",
+        "gradeCode": "8",
+        "branchAlpha": "NO",
+        "branchCode": "02",
+        "termOfEnlistment": "5",
+        "source": "0",
+        "nativity": "39",
+        "yearOfBirth": "06",
+        "race": "1",
+        "education": "4",
+        "civilianOccupation": "087",
+        "maritalStatus": "6",
+        "height": "33",
+        "weight": "444",
+        "component": "7",
+        "roll": "0694",
+        "frame": "1.211"
+      },
+      "nameAgreement": 1,
+      "sameNameInFile": 4
+    },
+    {
       "asn": "33685585",
       "film": [
         {
@@ -5005,6 +5347,44 @@
       "sameNameInFile": 132
     },
     {
+      "asn": "34579808",
+      "film": [
+        {
+          "page": 265,
+          "document": "SO 226",
+          "name": "White, Newton J"
+        }
+      ],
+      "card": {
+        "raw": "34579808WHITE NEWTON J          430454344231242PVT 8BI 00 5   24311106192671417 08213.243",
+        "asn": "34579808",
+        "name": "WHITE NEWTON J",
+        "residenceState": "43",
+        "residenceCounty": "045",
+        "placeOfEnlistment": "4344",
+        "dateOfEnlistment": "231242",
+        "gradeAlpha": "PVT",
+        "gradeCode": "8",
+        "branchAlpha": "BI",
+        "branchCode": "00",
+        "termOfEnlistment": "5",
+        "source": "2",
+        "nativity": "43",
+        "yearOfBirth": "11",
+        "race": "1",
+        "education": "0",
+        "civilianOccupation": "619",
+        "maritalStatus": "2",
+        "height": "67",
+        "weight": "141",
+        "component": "7",
+        "roll": "0821",
+        "frame": "3.243"
+      },
+      "nameAgreement": 1,
+      "sameNameInFile": 8
+    },
+    {
       "asn": "34587521",
       "film": [
         {
@@ -5193,6 +5573,44 @@
       },
       "nameAgreement": 1,
       "sameNameInFile": 1
+    },
+    {
+      "asn": "34714198",
+      "film": [
+        {
+          "page": 265,
+          "document": "SO 226",
+          "name": "Vales, William T"
+        }
+      ],
+      "card": {
+        "raw": "34714198VALES WILLIAM T         481134809290443PVT 8NO 02 5   04820103162590757 08393.261",
+        "asn": "34714198",
+        "name": "VALES WILLIAM T",
+        "residenceState": "48",
+        "residenceCounty": "113",
+        "placeOfEnlistment": "4809",
+        "dateOfEnlistment": "290443",
+        "gradeAlpha": "PVT",
+        "gradeCode": "8",
+        "branchAlpha": "NO",
+        "branchCode": "02",
+        "termOfEnlistment": "5",
+        "source": "0",
+        "nativity": "48",
+        "yearOfBirth": "20",
+        "race": "1",
+        "education": "0",
+        "civilianOccupation": "316",
+        "maritalStatus": "2",
+        "height": "59",
+        "weight": "075",
+        "component": "7",
+        "roll": "0839",
+        "frame": "3.261"
+      },
+      "nameAgreement": 1,
+      "sameNameInFile": 2
     },
     {
       "asn": "34714376",
@@ -5402,6 +5820,44 @@
       "sameNameInFile": 128
     },
     {
+      "asn": "34783261",
+      "film": [
+        {
+          "page": 265,
+          "document": "SO 226",
+          "name": "Ruehman, Sr, William H"
+        }
+      ],
+      "card": {
+        "raw": "34783261RUEHMAN WILLIAM H SR    420994213240443PVT 8NO 02 5   04215120722441147 08483.270",
+        "asn": "34783261",
+        "name": "RUEHMAN WILLIAM H SR",
+        "residenceState": "42",
+        "residenceCounty": "099",
+        "placeOfEnlistment": "4213",
+        "dateOfEnlistment": "240443",
+        "gradeAlpha": "PVT",
+        "gradeCode": "8",
+        "branchAlpha": "NO",
+        "branchCode": "02",
+        "termOfEnlistment": "5",
+        "source": "0",
+        "nativity": "42",
+        "yearOfBirth": "15",
+        "race": "1",
+        "education": "2",
+        "civilianOccupation": "072",
+        "maritalStatus": "2",
+        "height": "44",
+        "weight": "114",
+        "component": "7",
+        "roll": "0848",
+        "frame": "3.270"
+      },
+      "nameAgreement": 1,
+      "sameNameInFile": 1
+    },
+    {
       "asn": "34804629",
       "film": [
         {
@@ -5595,6 +6051,44 @@
       },
       "nameAgreement": 1,
       "sameNameInFile": 1
+    },
+    {
+      "asn": "35098818",
+      "film": [
+        {
+          "page": 265,
+          "document": "SO 226",
+          "name": "Schaffer, William D"
+        }
+      ],
+      "card": {
+        "raw": "35098818SCHAFFER WILLIAM D      511575124230343PVT 8NO 02 5   05123169926561097 08943.316",
+        "asn": "35098818",
+        "name": "SCHAFFER WILLIAM D",
+        "residenceState": "51",
+        "residenceCounty": "157",
+        "placeOfEnlistment": "5124",
+        "dateOfEnlistment": "230343",
+        "gradeAlpha": "PVT",
+        "gradeCode": "8",
+        "branchAlpha": "NO",
+        "branchCode": "02",
+        "termOfEnlistment": "5",
+        "source": "0",
+        "nativity": "51",
+        "yearOfBirth": "23",
+        "race": "1",
+        "education": "6",
+        "civilianOccupation": "992",
+        "maritalStatus": "6",
+        "height": "56",
+        "weight": "109",
+        "component": "7",
+        "roll": "0894",
+        "frame": "3.316"
+      },
+      "nameAgreement": 1,
+      "sameNameInFile": 42
     },
     {
       "asn": "35128736",
@@ -5930,6 +6424,44 @@
       },
       "nameAgreement": 1,
       "sameNameInFile": 3
+    },
+    {
+      "asn": "35434345",
+      "film": [
+        {
+          "page": 265,
+          "document": "SO 226",
+          "name": "Rigsby, Jessie C"
+        }
+      ],
+      "card": {
+        "raw": "35434345RIGSBY JESSIE C         522055442010742PVT 8BI 00 5   05221125036711367 09405.2  ",
+        "asn": "35434345",
+        "name": "RIGSBY JESSIE C",
+        "residenceState": "52",
+        "residenceCounty": "205",
+        "placeOfEnlistment": "5442",
+        "dateOfEnlistment": "010742",
+        "gradeAlpha": "PVT",
+        "gradeCode": "8",
+        "branchAlpha": "BI",
+        "branchCode": "00",
+        "termOfEnlistment": "5",
+        "source": "0",
+        "nativity": "52",
+        "yearOfBirth": "21",
+        "race": "1",
+        "education": "2",
+        "civilianOccupation": "503",
+        "maritalStatus": "6",
+        "height": "71",
+        "weight": "136",
+        "component": "7",
+        "roll": "0940",
+        "frame": "5.2"
+      },
+      "nameAgreement": 1,
+      "sameNameInFile": 2
     },
     {
       "asn": "35575925",
@@ -6411,6 +6943,44 @@
       },
       "nameAgreement": 1,
       "sameNameInFile": 41
+    },
+    {
+      "asn": "35754284",
+      "film": [
+        {
+          "page": 265,
+          "document": "SO 226",
+          "name": "Stroupe, Garland H"
+        }
+      ],
+      "card": {
+        "raw": "35754284STROUPE GARLAND H       540035420110543PVT 8NO 02 5   05423107366201077 09875.49 ",
+        "asn": "35754284",
+        "name": "STROUPE GARLAND H",
+        "residenceState": "54",
+        "residenceCounty": "003",
+        "placeOfEnlistment": "5420",
+        "dateOfEnlistment": "110543",
+        "gradeAlpha": "PVT",
+        "gradeCode": "8",
+        "branchAlpha": "NO",
+        "branchCode": "02",
+        "termOfEnlistment": "5",
+        "source": "0",
+        "nativity": "54",
+        "yearOfBirth": "23",
+        "race": "1",
+        "education": "0",
+        "civilianOccupation": "736",
+        "maritalStatus": "6",
+        "height": "20",
+        "weight": "107",
+        "component": "7",
+        "roll": "0987",
+        "frame": "5.49"
+      },
+      "nameAgreement": 1,
+      "sameNameInFile": 2
     },
     {
       "asn": "35761991",
@@ -6953,6 +7523,44 @@
         "component": "7",
         "roll": "1058",
         "frame": "5.120"
+      },
+      "nameAgreement": 1,
+      "sameNameInFile": 1
+    },
+    {
+      "asn": "36290246",
+      "film": [
+        {
+          "page": 265,
+          "document": "SO 226",
+          "name": "Suhr, Victor A"
+        }
+      ],
+      "card": {
+        "raw": "36290246SUHR VICTOR A           630816359151242PVT 8BI 00 5   06321103166681507 10605.122",
+        "asn": "36290246",
+        "name": "SUHR VICTOR A",
+        "residenceState": "63",
+        "residenceCounty": "081",
+        "placeOfEnlistment": "6359",
+        "dateOfEnlistment": "151242",
+        "gradeAlpha": "PVT",
+        "gradeCode": "8",
+        "branchAlpha": "BI",
+        "branchCode": "00",
+        "termOfEnlistment": "5",
+        "source": "0",
+        "nativity": "63",
+        "yearOfBirth": "21",
+        "race": "1",
+        "education": "0",
+        "civilianOccupation": "316",
+        "maritalStatus": "6",
+        "height": "68",
+        "weight": "150",
+        "component": "7",
+        "roll": "1060",
+        "frame": "5.122"
       },
       "nameAgreement": 1,
       "sameNameInFile": 1
@@ -8239,6 +8847,44 @@
       "sameNameInFile": 1
     },
     {
+      "asn": "39414941",
+      "film": [
+        {
+          "page": 265,
+          "document": "SO 226",
+          "name": "Davis, Samuel J"
+        }
+      ],
+      "card": {
+        "raw": "39414941DAVIS SAMUEL J          911099170240443PVT 8NO 02 5   09506107366341047 14327.3  ",
+        "asn": "39414941",
+        "name": "DAVIS SAMUEL J",
+        "residenceState": "91",
+        "residenceCounty": "109",
+        "placeOfEnlistment": "9170",
+        "dateOfEnlistment": "240443",
+        "gradeAlpha": "PVT",
+        "gradeCode": "8",
+        "branchAlpha": "NO",
+        "branchCode": "02",
+        "termOfEnlistment": "5",
+        "source": "0",
+        "nativity": "95",
+        "yearOfBirth": "06",
+        "race": "1",
+        "education": "0",
+        "civilianOccupation": "736",
+        "maritalStatus": "6",
+        "height": "34",
+        "weight": "104",
+        "component": "7",
+        "roll": "1432",
+        "frame": "7.3"
+      },
+      "nameAgreement": 1,
+      "sameNameInFile": 204
+    },
+    {
       "asn": "39602575",
       "film": [
         {
@@ -9110,6 +9756,43 @@
       "nameAgreement": 0.89
     },
     {
+      "asn": "33405102",
+      "film": [
+        {
+          "page": 265,
+          "document": "SO 226",
+          "name": "Fecman, Miroslav M"
+        }
+      ],
+      "card": {
+        "raw": "33405102PECMAN MIROSLAV M        20033298101242PVT 8BI 00 5   0O020141341661407 06541.171",
+        "asn": "33405102",
+        "name": "PECMAN MIROSLAV M",
+        "residenceState": "2",
+        "residenceCounty": "003",
+        "placeOfEnlistment": "3298",
+        "dateOfEnlistment": "101242",
+        "gradeAlpha": "PVT",
+        "gradeCode": "8",
+        "branchAlpha": "BI",
+        "branchCode": "00",
+        "termOfEnlistment": "5",
+        "source": "0",
+        "nativity": "O0",
+        "yearOfBirth": "20",
+        "race": "1",
+        "education": "4",
+        "civilianOccupation": "134",
+        "maritalStatus": "1",
+        "height": "66",
+        "weight": "140",
+        "component": "7",
+        "roll": "0654",
+        "frame": "1.171"
+      },
+      "nameAgreement": 0.93
+    },
+    {
       "asn": "33451263",
       "film": [
         {
@@ -9851,6 +10534,43 @@
       "nameAgreement": 1
     },
     {
+      "asn": "34778835",
+      "film": [
+        {
+          "page": 265,
+          "document": "SO 226",
+          "name": "Reid, Wayne N"
+        }
+      ],
+      "card": {
+        "raw": "34778835RAID WAYNE N            460974711150743PVT 8NO 02 5   04624127572000807 08473.269",
+        "asn": "34778835",
+        "name": "RAID WAYNE N",
+        "residenceState": "46",
+        "residenceCounty": "097",
+        "placeOfEnlistment": "4711",
+        "dateOfEnlistment": "150743",
+        "gradeAlpha": "PVT",
+        "gradeCode": "8",
+        "branchAlpha": "NO",
+        "branchCode": "02",
+        "termOfEnlistment": "5",
+        "source": "0",
+        "nativity": "46",
+        "yearOfBirth": "24",
+        "race": "1",
+        "education": "2",
+        "civilianOccupation": "757",
+        "maritalStatus": "2",
+        "height": "00",
+        "weight": "080",
+        "component": "7",
+        "roll": "0847",
+        "frame": "3.269"
+      },
+      "nameAgreement": 0.9
+    },
+    {
       "asn": "34800821",
       "film": [
         {
@@ -10103,6 +10823,43 @@
       "nameAgreement": 0.93
     },
     {
+      "asn": "35540852",
+      "film": [
+        {
+          "page": 265,
+          "document": "SO 226",
+          "name": "Austermiller, Kenneth R"
+        }
+      ],
+      "card": {
+        "raw": "35540852AU TERMILLER KENNETH R   30695384080143PVT 8+I 00 5   05323119926711857 09565.18 ",
+        "asn": "35540852",
+        "name": "AU TERMILLER KENNETH R",
+        "residenceState": "3",
+        "residenceCounty": "069",
+        "placeOfEnlistment": "5384",
+        "dateOfEnlistment": "080143",
+        "gradeAlpha": "PVT",
+        "gradeCode": "8",
+        "branchAlpha": "+I",
+        "branchCode": "00",
+        "termOfEnlistment": "5",
+        "source": "0",
+        "nativity": "53",
+        "yearOfBirth": "23",
+        "race": "1",
+        "education": "1",
+        "civilianOccupation": "992",
+        "maritalStatus": "6",
+        "height": "71",
+        "weight": "185",
+        "component": "7",
+        "roll": "0956",
+        "frame": "5.18"
+      },
+      "nameAgreement": 0.95
+    },
+    {
       "asn": "35621793",
       "film": [
         {
@@ -10175,6 +10932,43 @@
         "frame": "5.33"
       },
       "nameAgreement": 0.91
+    },
+    {
+      "asn": "35692454",
+      "film": [
+        {
+          "page": 265,
+          "document": "SO 226",
+          "name": "Whitlock, David V"
+        }
+      ],
+      "card": {
+        "raw": "35692454WHITLOCK DAVID          520875260311242PVT 8BI 00 5   05222103166721297 09785.40 ",
+        "asn": "35692454",
+        "name": "WHITLOCK DAVID",
+        "residenceState": "52",
+        "residenceCounty": "087",
+        "placeOfEnlistment": "5260",
+        "dateOfEnlistment": "311242",
+        "gradeAlpha": "PVT",
+        "gradeCode": "8",
+        "branchAlpha": "BI",
+        "branchCode": "00",
+        "termOfEnlistment": "5",
+        "source": "0",
+        "nativity": "52",
+        "yearOfBirth": "22",
+        "race": "1",
+        "education": "0",
+        "civilianOccupation": "316",
+        "maritalStatus": "6",
+        "height": "72",
+        "weight": "129",
+        "component": "7",
+        "roll": "0978",
+        "frame": "5.40"
+      },
+      "nameAgreement": 0.93
     },
     {
       "asn": "35915440",
@@ -11254,6 +12048,55 @@
       },
       "nameAgreement": 0.18,
       "sameNameInFile": 0
+    },
+    {
+      "asn": "17006687",
+      "film": [
+        {
+          "page": 265,
+          "document": "SO 226",
+          "name": "Reves, Archie C"
+        }
+      ],
+      "card": {
+        "raw": "17006687DAVIS THOMAS             51917545170740PVT 8FA 30 7   06114129996681471 02382.95 ",
+        "asn": "17006687",
+        "name": "DAVIS THOMAS",
+        "residenceState": "5",
+        "residenceCounty": "191",
+        "placeOfEnlistment": "7545",
+        "dateOfEnlistment": "170740",
+        "gradeAlpha": "PVT",
+        "gradeCode": "8",
+        "branchAlpha": "FA",
+        "branchCode": "30",
+        "termOfEnlistment": "7",
+        "source": "0",
+        "nativity": "61",
+        "yearOfBirth": "14",
+        "race": "1",
+        "education": "2",
+        "civilianOccupation": "999",
+        "maritalStatus": "6",
+        "height": "68",
+        "weight": "147",
+        "component": "1",
+        "roll": "0238",
+        "frame": "2.95"
+      },
+      "nameAgreement": 0.17,
+      "sameNameInFile": 1,
+      "candidates": [
+        {
+          "asn": "17008687",
+          "name": "REVES ARCHIE C",
+          "digitsApart": [
+            5
+          ],
+          "roll": "0239",
+          "frame": "2.96"
+        }
+      ]
     },
     {
       "asn": "17125062",
@@ -15369,6 +16212,17 @@
       "sameNameInFile": 691
     },
     {
+      "asn": "18023594",
+      "film": [
+        {
+          "page": 265,
+          "document": "SO 226",
+          "name": "Bertrand, Joseph M"
+        }
+      ],
+      "sameNameInFile": 14
+    },
+    {
       "asn": "19130187",
       "film": [
         {
@@ -15444,6 +16298,17 @@
         }
       ],
       "sameNameInFile": 2
+    },
+    {
+      "asn": "31354148",
+      "film": [
+        {
+          "page": 265,
+          "document": "SO 226",
+          "name": "DiStefano, Frank G"
+        }
+      ],
+      "sameNameInFile": 8
     },
     {
       "asn": "31611323",
@@ -15531,6 +16396,28 @@
         }
       ],
       "sameNameInFile": 1
+    },
+    {
+      "asn": "32536098",
+      "film": [
+        {
+          "page": 265,
+          "document": "SO 226",
+          "name": "Teresa, Angelo F"
+        }
+      ],
+      "sameNameInFile": 1,
+      "candidates": [
+        {
+          "asn": "32586098",
+          "name": "TERESA ANGELO F",
+          "digitsApart": [
+            4
+          ],
+          "roll": "0535",
+          "frame": "2.199"
+        }
+      ]
     },
     {
       "asn": "32659730",
@@ -15730,6 +16617,17 @@
         }
       ],
       "sameNameInFile": 0
+    },
+    {
+      "asn": "32898992",
+      "film": [
+        {
+          "page": 265,
+          "document": "SO 226",
+          "name": "Ihrig, George C"
+        }
+      ],
+      "sameNameInFile": 3
     },
     {
       "asn": "32919382",
@@ -16222,7 +17120,7 @@
         {
           "page": 270,
           "document": "SO 226",
-          "name": "Jajacakowski, Anthony T"
+          "name": "Zajacakowski, Anthony T"
         }
       ],
       "sameNameInFile": 0
@@ -16907,6 +17805,17 @@
       "sameNameInFile": 0
     },
     {
+      "asn": "36833076",
+      "film": [
+        {
+          "page": 265,
+          "document": "SO 226",
+          "name": "Sutherland, Ralph K"
+        }
+      ],
+      "sameNameInFile": 10
+    },
+    {
       "asn": "36857203",
       "film": [
         {
@@ -16989,12 +17898,34 @@
       "sameNameInFile": 0
     },
     {
+      "asn": "37011527",
+      "film": [
+        {
+          "page": 265,
+          "document": "SO 226",
+          "name": "Carr, Nick R"
+        }
+      ],
+      "sameNameInFile": 0
+    },
+    {
       "asn": "37011807",
       "film": [
         {
           "page": 250,
           "document": "SO 66",
           "name": "VanHoutan, Guy W"
+        }
+      ],
+      "sameNameInFile": 0
+    },
+    {
+      "asn": "37057270",
+      "film": [
+        {
+          "page": 265,
+          "document": "SO 226",
+          "name": "Boerding, Clarence F"
         }
       ],
       "sameNameInFile": 0
@@ -17073,6 +18004,17 @@
         }
       ],
       "sameNameInFile": 23
+    },
+    {
+      "asn": "37090712",
+      "film": [
+        {
+          "page": 265,
+          "document": "SO 226",
+          "name": "Reed, Edward J"
+        }
+      ],
+      "sameNameInFile": 121
     },
     {
       "asn": "37124267",
@@ -17338,6 +18280,17 @@
       "sameNameInFile": 12
     },
     {
+      "asn": "37534500",
+      "film": [
+        {
+          "page": 265,
+          "document": "SO 226",
+          "name": "Rawie, Charles T"
+        }
+      ],
+      "sameNameInFile": 0
+    },
+    {
       "asn": "37545779",
       "film": [
         {
@@ -17544,6 +18497,17 @@
         }
       ],
       "sameNameInFile": 0
+    },
+    {
+      "asn": "39271812",
+      "film": [
+        {
+          "page": 265,
+          "document": "SO 226",
+          "name": "Hudson, Virgil W"
+        }
+      ],
+      "sameNameInFile": 13
     },
     {
       "asn": "39306911",
