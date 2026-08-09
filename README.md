@@ -343,8 +343,16 @@ push; a second deploy path would race it. The workflow carries a commented
 
 - Second-read the morning-report cards; only frames 218 and 219 have been through
   `verify-transcription`
-- Second-read Special Orders 226, frames 265–270, and resolve the twenty-four
-  incomplete serials
+- Second-read Special Orders 226, frames 265–270. Frame 269 is done — see
+  [`transcriptions/p269-comments.md`](transcriptions/p269-comments.md) — and
+  turned up a two-row MOS/ASR column shift, so read the other five with the
+  columns checked row by row, and with `--rotate -90`
+- **Get a better scan of frames 265–270.** The twenty-four incomplete serials on
+  SO 226 cannot be resolved from the present one. The embedded image is
+  1813 × 1802 pixels for a whole sheet, the carbon failed across the serial
+  column while the columns beside it stayed crisp, and none of the twenty-four
+  men appears in the Battery C morning reports, so there is no second source.
+  This is a fetch-something-new task, not a read-harder one
 - Adjudicate the nine `probable` Battery C matches, where the two readings of a
   serial differ by a digit or two: Andrews, Griffith, Adams, Lee, Mays, Holland,
   Agee, Cole (James E), Hickman

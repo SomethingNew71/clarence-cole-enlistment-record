@@ -188,6 +188,21 @@ Working from the source PDF: `cole.pdf` is gitignored and symlinked in locally �
 63 MB, and not ours to commit. `tools/deskew-page.mjs` renders and straightens a
 frame; pass `--rotate 0` when a card frame comes out sideways.
 
+**The auto-rotation can be confidently wrong.** On frame 269 it picks the
+sideways orientation and reports `+0.0 deg` for it, because it maximises row-ink
+variance and the sideways image scores well. The real sheet is `--rotate -90` at
+`+1.2 deg` — and that 1.2 degrees had already shifted the MOS column against the
+names for two rows. A suspiciously clean `+0.0 deg` is a reason to try the other
+rotation, not a reassurance.
+
+**Rendering a frame larger does not make it more legible.** The embedded scans
+are about 1813 × 1802 pixels for a whole sheet, so `deskew-page.mjs` at scale 4.2
+is already past native and anything beyond it is interpolation that reads as
+sharpness while carrying no more information. To squeeze a damaged row, pull the
+embedded bitmap out of the PDF and upscale once from that. Where a serial is
+illegible but the MOS and ASR beside it are crisp, the carbon failed and there is
+nothing under the smear — no amount of re-cropping will recover it.
+
 ## On Sergeant Cole
 
 The film names him on three frames, all from the occupation: 243 (20 August 1945,
