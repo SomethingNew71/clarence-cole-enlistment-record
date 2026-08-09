@@ -19,12 +19,21 @@ Transcribed from the film:
 | --- | --- | --- |
 | 1–247, 253–264, 271–284 | Battery C morning reports — 495 daily reports, 2 May 1944 to 10 October 1945 | first pass, except frames 218 and 219 |
 | 248–252 | Special Orders 66 — 142 men out, to the 70th Inf Div | verified |
-| 265–270 | Special Orders 226 — 241 men in, from the 29th Inf Div | first pass |
+| 265–270 | Special Orders 226 — 276 men in, from the 29th Inf Div | second read, unresolved serials |
 
-All 284 frames are transcribed. What remains is the second reading. Frames 218
-and 219 are the same two cards photographed twice, read against each other, and
-verified; every other morning-report card is a first pass, as is Special Orders
-226, where twenty-four men still have an incomplete serial number.
+All 284 frames are transcribed. Frames 218 and 219 are the same two cards
+photographed twice, read against each other, and verified; every morning-report
+card is otherwise a first pass.
+
+Special Orders 226 has been through a second reading of its MOS and ASR columns
+against the film. It stays `verified: false` because twenty-seven men still have
+an incomplete serial number, and those cannot be resolved from this scan —
+[`transcriptions/p269-comments.md`](transcriptions/p269-comments.md) sets out
+why, and what would be needed instead.
+
+Do not quote the figures in this table from memory. `npm run build:roster` and
+`npm run build:timeline` count the files and print the current numbers; the
+counts above went stale twice before that habit stuck.
 
 Four primary sources, all agreeing where they overlap:
 
@@ -50,10 +59,11 @@ Recorded as data in `timeline.json` → `crossReferences`, not just asserted her
   the northern shoulder of the Bulge.
 - Neither special order carries a battery column, so neither can place a man in
   Battery C on its own. Cross-matching serials against the Battery C morning
-  reports resolves **19 of the 383** — 13 confirmed on an exact match, 6 probable
-  where the two readings differ by a digit or two. None of the 241 men on SO 226
-  match, which is what you would expect: they arrived in September, after the
-  transcribed cards end.
+  reports resolves **41 of the 418** — 32 confirmed on an exact match, 9 probable
+  where the two readings differ by a digit or two. Twelve of those are on SO 226,
+  the September intake, which is worth knowing: men were arriving into a battery
+  whose own cards still name them, so the two sources overlap by more than the
+  dates alone would suggest.
 
 The cross-reference has also caught real errors in both directions. The
 independent reading of SO 66 corrected `35013798` from *Kolosxi* to **McKoski**
@@ -343,16 +353,17 @@ push; a second deploy path would race it. The workflow carries a commented
 
 - Second-read the morning-report cards; only frames 218 and 219 have been through
   `verify-transcription`
-- Second-read Special Orders 226, frames 265–270. Frame 269 is done — see
-  [`transcriptions/p269-comments.md`](transcriptions/p269-comments.md) — and
-  turned up a two-row MOS/ASR column shift, so read the other five with the
-  columns checked row by row, and with `--rotate -90`
-- **Get a better scan of frames 265–270.** The twenty-four incomplete serials on
+- Second-read the *names and serials* on Special Orders 226. All six frames have
+  had their MOS and ASR columns checked against the film — that pass found a
+  two-row shift on 269, an eight-row shift on 268 and two errors on 270, and it
+  is what cleared 266 and 267. The name and serial columns have not had the same
+  treatment, and the flags stay `verified: false` until they do
+- **Get a better scan of frames 265–270.** The twenty-seven incomplete serials on
   SO 226 cannot be resolved from the present one. The embedded image is
   1813 × 1802 pixels for a whole sheet, the carbon failed across the serial
-  column while the columns beside it stayed crisp, and none of the twenty-four
-  men appears in the Battery C morning reports, so there is no second source.
-  This is a fetch-something-new task, not a read-harder one
+  column while the columns beside it stayed crisp, and none of those men appears
+  in the Battery C morning reports, so there is no second source. This is a
+  fetch-something-new task, not a read-harder one
 - Adjudicate the nine `probable` Battery C matches, where the two readings of a
   serial differ by a digit or two: Andrews, Griffith, Adams, Lee, Mays, Holland,
   Agee, Cole (James E), Hickman
