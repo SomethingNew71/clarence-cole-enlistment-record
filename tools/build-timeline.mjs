@@ -23,12 +23,14 @@ import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { readPages, parseCards } from "./lib/pages.mjs";
+import { createPlaceResolver, placeKey } from "./lib/places.mjs";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const SRC = resolve(ROOT, "transcriptions");
 const GAZ = resolve(ROOT, "data/gazetteer.json");
 const TIMELINE = resolve(ROOT, "public/data/timeline.json");
 const FULL = resolve(ROOT, "public/data/morning-reports.json");
+const BATTERY = resolve(ROOT, "public/data/battery.json");
 
 const pages = readPages(SRC);
 
@@ -104,29 +106,9 @@ if (dupes.length) {
 
 
 /* -------------------------------------------------------------------- places */
-const slug = (s) =>
-  s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "")
-    .replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
-
-// Keys already used by the hand-authored events, so the two sets do not diverge.
-const ALIAS = {
-  "fort-slocum-new-york": "fort-slocum",
-  "new-york-port-of-embarkation": "nype",
-  "north-atlantic-crossing": "atlantic",
-};
-const placeKey = (name) => ALIAS[slug(name)] ?? slug(name);
-
-const esc = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-const matchers = [...gaz.places]
-  .sort((a, b) => b.match.trim().length - a.match.trim().length)
-  .map((p) => ({ ...p, re: new RegExp(`\\b${esc(p.match.trim())}\\b`, "i") }));
-
-const placeFor = (station, date) => {
-  const ov = gaz.overrides.find((o) => date >= o.from && date <= o.to);
-  if (ov) return gaz.places.find((p) => p.match === ov.place) ?? null;
-  if (!station) return null;
-  return matchers.find((p) => p.re.test(station)) ?? null;
-};
+// Whole-word, longest-match-first, with the two Normandy overrides. Shared with
+// the weather fetch through tools/lib/places.mjs so the two cannot drift.
+const placeFor = createPlaceResolver(gaz);
 
 /* --------------------------------------------------------------- classifying */
 const CASUALTY = /killed|wounded|\bLIA\b|injured in action/i;
@@ -353,6 +335,91 @@ writeFileSync(
   "utf8",
 );
 
+/* ---------------------------------------- what the battery's own numbers say */
+
+/**
+ * The clerk's vocabulary for a status change, sorted into kinds.
+ *
+ * Ordered, and the first match wins, so the specific sits above the general: a
+ * correction that reports a wound is a wound, and a man transferred out of a
+ * hospital has left the battery whichever word you lead with. The wording is
+ * the clerk's, not a scheme imposed on him — every pattern here was read off
+ * the film, and `other` reports what none of them caught rather than hiding it.
+ */
+const ACTION_KINDS = [
+  { id: "killed", label: "Killed", match: /KILLED IN|\bdied\b|deceased/i },
+  { id: "wounded", label: "Wounded or injured in action", match: /\bLIA\b|\bWIA\b|\bSWA\b|WOUNDED IN ACTION|INJURED IN ACTION|\bwound/i },
+  { id: "joined", label: "Assigned and joined", match: /assigned\s*&|asgd\s*&|attached and joined|&\s*(jd|joined)\b|\bjoined\b|\basgd not yet jd\b|^jd\b/i },
+  { id: "departed", label: "Transferred or departed", match: /\btrfd\b|\btransferred\b|\btrf to\b|attached out|reld\s+at?chd|relieved\s+attached|\bdeparted\b|honorably discharged/i },
+  { id: "promoted", label: "Promoted or appointed", match: /\bpromoted\b|\bappointed\b|\baptd\b|\brerated\b/i },
+  { id: "reduced", label: "Reduced in grade", match: /\breduced\b|\brd to\b/i },
+  { id: "hospital", label: "Sick or injured, to hospital", match: /\bhosp\b|hospital|\bevac\b|clearing station|\bsk\b|\bsick\b/i },
+  { id: "returned", label: "Returned to duty", match: /\bto dy\b|\bto duty\b/i },
+  { id: "detached", label: "Detached or temporary duty", match: /\bto DS\b|\bto TD\b|detached service|temporary duty/i },
+  { id: "leave", label: "Leave or furlough", match: /furlough|\bfur\b|\bleave\b|\bpass\b|rest cent|recreation/i },
+  { id: "absent", label: "Absent without leave", match: /\bAWOL\b|confin|arrest/i },
+  { id: "duty", label: "Job changed", match: /duty changed|\bdy c(hanged)? \b|\bmos c\b|\bduty:/i },
+  { id: "admin", label: "Rations, points and corrections", match: /\brat(ion)?s?\b|\bqtrs\b|\bqrs\b|\bASR\b|^CORRECTION|phy cl/i },
+];
+
+const actions = [];
+for (const day of days) {
+  for (const p of day.personnel) {
+    if (!p.action) continue;
+    const kind = ACTION_KINDS.find((k) => k.match.test(p.action));
+    actions.push({ date: day.date, page: day.pages[0], kind: kind?.id ?? "other", ...p });
+  }
+}
+
+const tally = (id) => actions.filter((a) => a.kind === id);
+const strength = days
+  .filter((d) => d.em_duty != null && d.em_total != null)
+  .map((d) => ({ date: d.date, present: d.em_duty, assigned: d.em_total }));
+
+mkdirSync(dirname(BATTERY), { recursive: true });
+writeFileSync(
+  BATTERY,
+  `${JSON.stringify(
+    {
+      meta: {
+        title: "Battery C — strength and status changes, read off the morning reports",
+        note:
+          "Generated by tools/build-timeline.mjs from transcriptions/. The strength line is " +
+          "enlisted men only, as the card records it, carried forward on days the clerk wrote " +
+          "no change. A status change is one line on a card, so the counts are entries and not " +
+          "men: a man who went to hospital and came back is two.",
+        firstDate: strength[0]?.date ?? null,
+        lastDate: strength[strength.length - 1]?.date ?? null,
+      },
+      strength,
+      actions: {
+        total: actions.length,
+        kinds: [...ACTION_KINDS, { id: "other", label: "Not classified" }]
+          .map(({ id, label }) => {
+            const rows = tally(id);
+            return {
+              id,
+              label,
+              count: rows.length,
+              // One verbatim entry, so a reader can see the wording the count rests on.
+              example: rows[0] ? { date: rows[0].date, page: rows[0].page, action: rows[0].action } : null,
+            };
+          })
+          .filter((k) => k.count > 0)
+          .sort((a, b) => b.count - a.count),
+        // The two deaths and every wound, named. Too few to be a bar and too
+        // important to leave as one.
+        casualties: actions
+          .filter((a) => a.kind === "killed" || a.kind === "wounded")
+          .map((a) => ({ date: a.date, page: a.page, name: a.name, kind: a.kind, action: a.action })),
+      },
+    },
+    null,
+    2,
+  )}\n`,
+  "utf8",
+);
+
 const miles = days.reduce((sum, d) => {
   const m = [...(d.events ?? "").matchAll(/distance trave?l+ed\s+(\d+)\s*mi/gi)];
   return sum + m.reduce((s, x) => s + Number(x[1]), 0);
@@ -361,5 +428,6 @@ const miles = days.reduce((sum, d) => {
 console.log(
   `daily reports ${days.length} · timeline events ${events.length} ` +
     `(${handAuthored.length} hand-authored, ${kept.length} from the film, ${enriched} enriched) · ` +
-    `places ${Object.keys(places).length} · road miles ${miles}`,
+    `places ${Object.keys(places).length} · road miles ${miles} · ` +
+    `strength readings ${strength.length} · status changes ${actions.length}`,
 );

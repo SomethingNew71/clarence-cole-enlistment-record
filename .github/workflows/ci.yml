@@ -59,7 +59,12 @@ jobs:
       - name: Rebuild the map-sheet register from the transcriptions
         run: npm run build:maps
 
-      - name: Validate timeline.json
+      # Offline: it reads the committed data/weather.json, it does not refetch.
+      # Only `npm run weather:fetch` touches the network, and CI never runs it.
+      - name: Rebuild the modelled weather from the committed pull
+        run: npm run build:weather
+
+      - name: Validate timeline.json and the modelled weather
         run: npm run check:data
 
       # The lettered squares in tools/lib/grids.mjs are derived from the reports.
@@ -81,7 +86,7 @@ jobs:
       - name: Fail if generated files are stale
         run: |
           if ! git diff --quiet -- public/data; then
-            echo "::error::public/data is out of date. Run 'npm run build:roster && npm run build:timeline && npm run build:maps' and commit the result."
+            echo "::error::public/data is out of date. Run 'npm run build:roster && npm run build:timeline && npm run build:maps && npm run build:weather' and commit the result."
             git diff --stat -- public/data
             exit 1
           fi

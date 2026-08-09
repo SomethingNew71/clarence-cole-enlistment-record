@@ -81,7 +81,27 @@ misaligned. Re-crop that stretch at higher magnification before deciding.
 If neither reading can be defended, the honest resolution is a `?` and a flag,
 not a coin flip.
 
-### 5. Clear the flag
+### 5. Check the serials against the Archives
+
+```sh
+npm run check:serials -- --fetch   # once; 185 MB down, 837 MB on disk
+npm run check:serials
+```
+
+This looks up every serial on the page in the Army Serial Number Electronic File,
+the Archives' converted punch cards for men entering the Army 1938–46. A serial
+that lands on a card bearing a different name, when the man himself is on a card
+one digit away, is a misread digit and the report names the column.
+
+It is a third reading, not a verdict. A missing card means nothing — a sixth of
+the cards were lost before conversion — and the card file has its own errors.
+Resolve every flagged row against the image the same way as step 4, and if the
+image supports the transcription against the card, say so in the page's comments
+file so nobody re-runs the investigation.
+
+The comments files for frames 248, 265 and 121 show the form.
+
+### 6. Clear the flag
 
 Once the two readings agree, or every difference has been resolved against the
 image:

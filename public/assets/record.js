@@ -10,6 +10,8 @@
  * the whole record in the DOM at once is several thousand nodes for no gain.
  */
 
+import { loadWeather, weatherFor, weatherNode } from "/assets/lib/weather.js";
+
 const DATE_FMT = new Intl.DateTimeFormat("en-GB", {
   day: "numeric",
   month: "short",
@@ -21,7 +23,9 @@ const formatDate = (iso) => DATE_FMT.format(new Date(`${iso}T00:00:00Z`));
 const BATCH = 120;
 
 export async function renderDailyRecord(host, { search, status, more }) {
-  const res = await fetch("/data/morning-reports.json");
+  // The record is the point; the weather is an addition to it. Fetched together,
+  // but only the record is allowed to fail the render.
+  const [res, weather] = await Promise.all([fetch("/data/morning-reports.json"), loadWeather()]);
   if (!res.ok) throw new Error(`morning-reports.json: ${res.status}`);
   const { meta, days } = await res.json();
 
@@ -64,6 +68,14 @@ export async function renderDailyRecord(host, { search, status, more }) {
     body.textContent = day.events ?? "No change.";
     if (!day.events) body.classList.add("card__events--empty");
     li.append(body);
+
+    // The daily record carries the "in position firing" days precisely because
+    // they are the texture of the war a gun battery fought. The sky is the one
+    // thing that changed on those days, so it belongs here more than anywhere.
+    // Matched on place name — this file names places, the timeline keys them.
+    const sky = day.place ? weatherFor(weather, day.date, { placeName: day.place }) : null;
+    const skyNode = sky ? weatherNode(sky, { className: "weather card__weather" }) : null;
+    if (skyNode) li.append(skyNode);
 
     if (day.personnel.length) {
       const ul = document.createElement("ul");

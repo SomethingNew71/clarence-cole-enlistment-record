@@ -60,15 +60,41 @@ Recorded as data in `timeline.json` → `crossReferences`, not just asserted her
 - Neither special order carries a battery column, so neither can place a man in
   Battery C on its own. Cross-matching serials against the Battery C morning
   reports resolves **41 of the 418** — 32 confirmed on an exact match, 9 probable
-  where the two readings differ by a digit or two. Twelve of those are on SO 226,
-  the September intake, which is worth knowing: men were arriving into a battery
-  whose own cards still name them, so the two sources overlap by more than the
-  dates alone would suggest.
+  where the two readings differ by a digit or two. Twelve of the 276 men on
+  SO 226 match, which is fewer than the order's length suggests: they arrived in
+  September, at the end of the transcribed run.
 
 The cross-reference has also caught real errors in both directions. The
 independent reading of SO 66 corrected `35013798` from *Kolosxi* to **McKoski**
 in the morning-report transcription, and exposed an internal inconsistency where
 the same man was written *Frehnheiser* on one card and *Frohnheiser* on another.
+
+A third source now checks the same field from outside the film. The Archives
+hold a punch card for nearly every man who entered the Army between 1938 and
+1946, converted to a data file of 9,200,232 records keyed on serial number
+(NARA ID 1263923). `npm run check:serials` looks up all 556 serials read off the
+transcriptions and writes `data/nara-asn-crosscheck.json`.
+
+| | |
+| --- | --- |
+| land on a card of the same name | 215 |
+| same man, spelt differently | 64 |
+| land on a different man | 101 |
+| no card of that serial | 176 |
+
+For 49 of the disagreements the man named on the film is on a card one or two
+digits from the serial as read, which names the column to re-read. As a share of
+each source's checkable serials: Special Orders 66, read twice, 4 of 63; the
+morning reports, 14 of 146; Special Orders 226, 31 of 171. Six per cent against
+ten and eighteen — the clearest measure yet of what a second reading is worth.
+
+Recompute those figures from `data/nara-asn-crosscheck.json` rather than quoting
+them; every number in this section has been stale at least once.
+
+Nothing it finds has been applied. A missing card is not a disagreement: a sixth
+of the cards were lost before conversion. And the card file has its own errors —
+NARA compared 377 records against the original punch cards and found 5 serials
+and 18 names wrong. The film decides; the check says where to look.
 
 ## Running it
 
@@ -91,6 +117,7 @@ transcriptions/           EVERYTHING read off the film, one file per PDF page
                           kind: morning-report -> timeline.json
 data/gazetteer.json       place name to coordinate, phase bands, station overrides
 data/map-series.json      GSGS series catalogue, and where each sheet can be found
+data/weather.json         the ERA5 pull, as fetched — committed, never refetched
 public/                   everything served
   index.html              Home — the hero and the five rooms
   story/    timeline/     one directory per room, each a plain index.html
@@ -101,10 +128,12 @@ public/                   everything served
   assets/story.js         the discharge record, both maps, the campaign bars
   assets/timeline.js      the merged event list and its filters
   assets/maps.js          the positions map; frames sheets.js
-  assets/battalion.js     wires graph.js and writes the two notes under it
+  assets/battalion.js     wires battery.js and graph.js, and the notes under them
+  assets/battery.js       Battery C's strength line, status changes and casualties
   assets/archive.js       the documents and the sources; fires record.js
   assets/lib/format.js    dates and small DOM helpers, shared by the rooms
   assets/lib/atlas.js     the themed Leaflet map, and which labels can be pinned
+  assets/lib/weather.js   the modelled-weather strip: icon sprite, readings, tag
   assets/graph.js         the roster network: force layout, no libraries
   assets/record.js        the full day-by-day record, loaded on demand
   assets/sheets.js        the map sheets and the decoded firing positions
@@ -112,8 +141,10 @@ public/                   everything served
   assets/vendor/          Leaflet 1.9.4, vendored — no CDN
   data/timeline.json      curated events + events built from the film
   data/morning-reports.json  generated — the complete daily record
+  data/battery.json       generated — strength by day, status changes by kind
   data/roster.json        generated from transcriptions/ — do not edit
   data/map-sheets.json    generated — sheets named, positions decoded
+  data/weather.json       generated — modelled weather, keyed by date
   data/geo/theater.json   generated coastline — no longer read by the site
   images/                 scanned documents, web-sized plus thumbnails
 tools/build-geo.mjs       rebuilds theater.json from Natural Earth data
@@ -122,8 +153,14 @@ tools/lib/grids.mjs       Lambert Zone I and Nord de Guerre -> WGS 84
 tools/build-roster.mjs    order pages -> roster.json, + Battery C match
 tools/build-timeline.mjs  morning-report pages -> timeline.json
 tools/build-map-sheets.mjs  map citations + grid refs -> map-sheets.json
+tools/lib/places.mjs      station -> place, matched in one place
+tools/fetch-weather.mjs   the one-time ERA5 pull (the only tool using the network)
+tools/build-weather.mjs   data/weather.json -> public/data/weather.json
 tools/derive-grid-squares.mjs  recovers the lettered squares from the reports
 tools/compare-transcription.mjs  second-reader diff for a page
+tools/nara-asn-crosscheck.mjs  every serial against the Archives' card file
+data/nara-asn-crosscheck.json  its result, committed so the download is optional
+tools/nara-catalog-grep.mjs  searches NARA's catalogue export, OCR included
 tools/deskew-page.mjs     straightened, banded images for a page
 tools/check-data.mjs      validates timeline.json
 ```
@@ -201,7 +238,62 @@ multi-page reports are merged by date at build time.
 New places go in `data/gazetteer.json` under `places`. Matching is on whole words,
 longest match first — which is why `"Ger"` (the Manche village) does not swallow
 every station string ending `(Germany)`. That bug relocated three months of the
-war to Normandy before it was caught; the ordering is load-bearing.
+war to Normandy before it was caught; the ordering is load-bearing. The matcher
+lives in `tools/lib/places.mjs` and both the timeline build and the weather fetch
+use it, so a station resolves the same way in both.
+
+## The weather, which is not a source
+
+Every dated claim on this site comes off the film except one: the line marked
+**modelled** on the timeline and on each card of the daily record.
+
+The morning reports never mention the weather. The word does not appear in any of
+the 284 frames. So the weather is not a corroboration of anything and nothing
+corroborates it — it is context, added because 451 of these days are a gun
+battery sitting in one place, and the sky is what changed.
+
+It is [ERA5](https://open-meteo.com/en/docs/historical-weather-api) via the
+Open-Meteo archive: a modern weather model rerun over the sparse observations
+that survive from the 1940s. Reanalysis, not observation, and regional rather
+than local — a grid cell roughly 25 km across, which can sit up to 16 km from the
+village the clerk named. `public/data/weather.json` records the cell used, its
+elevation, and that offset, for every place.
+
+```sh
+npm run build:timeline    # weather:fetch reads its output
+npm run weather:fetch     # the only command here that touches the network
+npm run build:weather
+```
+
+`data/weather.json` is the pull, committed and faithful to the API response;
+`public/data/weather.json` is derived from it and is what the site serves. A
+fresh clone serves the weather with nothing run and the browser never makes the
+request — the site still makes exactly one kind of external request, and it is
+still map tiles. `weather:fetch` is incremental; pass `--force` to refetch.
+
+It renders as a row of discrete readings — sky, temperature, precipitation,
+wind, daylight — each an icon and a figure, rather than a sentence. The glyphs
+are hand-drawn line SVG in a `<symbol>` sprite injected once per page; there is
+no icon font and no CDN, and adding one would break the site's single-request
+rule. The wind arrow is rotated to the bearing and points the way the wind was
+blowing, which is the direction it came *from* turned about.
+
+Five decisions are worth knowing before changing any of it:
+
+- **A day names the place it was modelled for**, and `npm run check:data` fails
+  if that place disagrees with the station on the card. A weather line under the
+  wrong sky would look completely normal on the page.
+- **Days with an unresolved station get nothing**, rather than the previous day's
+  weather. That is 38 of the 495.
+- **The Atlantic crossing gets nothing.** The gazetteer holds a single nominal
+  mid-ocean coordinate, and eight days of a moving convoy are not at it.
+- **No clock times are published.** Open-Meteo puts Europe/London at UTC+1 for
+  June 1944, but Britain was on British Double Summer Time, so its sunrise is an
+  hour out. Everything is fetched and stored in UTC and only the *length* of
+  daylight is shown.
+- **Rain or snow under a hundredth of an inch reads "trace"**, the convention,
+  because 0.1 mm of modelled drizzle formatted to two places reads "0.00 in" —
+  which looks like a bug and tells the reader nothing. 34 days are traces.
 
 ## Map images
 
@@ -339,11 +431,12 @@ fall behind the transcription.
 
 ## Continuous integration
 
-`.github/workflows/ci.yml` rebuilds the roster, the timeline and the map-sheet
-register from the transcriptions on every pull request, validates
+`.github/workflows/ci.yml` rebuilds the roster, the timeline, the map-sheet
+register and the modelled weather on every pull request, validates
 `timeline.json`, re-derives the grid squares and fails if any has moved against
 `tools/lib/grids.mjs`, and fails if the committed files under `public/data` no
-longer match their sources.
+longer match their sources. Every step is offline — `weather:fetch` is the only
+command that uses the network and CI never runs it.
 
 It does **not** deploy. Cloudflare's Git integration already deploys `main` on
 push; a second deploy path would race it. The workflow carries a commented
@@ -352,12 +445,15 @@ push; a second deploy path would race it. The workflow carries a commented
 ## Still to do
 
 - Second-read the morning-report cards; only frames 218 and 219 have been through
-  `verify-transcription`
-- Second-read the *names and serials* on Special Orders 226. All six frames have
-  had their MOS and ASR columns checked against the film — that pass found a
-  two-row shift on 269, an eight-row shift on 268 and two errors on 270, and it
-  is what cleared 266 and 267. The name and serial columns have not had the same
-  treatment, and the flags stay `verified: false` until they do
+  `verify-transcription`. `npm run check:serials` names the rows on the others
+  where the serial disagrees with the Archives' card file
+- Re-read the Special Orders 226 serials that `check:serials` flags as one or two
+  digits from a card of the same man. All six frames have now had their grades,
+  names, serials, MOS and ASR checked against the film — that pass found a
+  two-row shift on 269, an eight-row shift on 268 and two errors on 270 — but it
+  compared the film against the committed table rather than reading it blind, so
+  the flags stay `verified: false`. The card file gives the *column* to look at,
+  which is the thing a second reading of the film alone does not
 - **Get a better scan of frames 265–270.** The twenty-seven incomplete serials on
   SO 226 cannot be resolved from the present one. The embedded image is
   1813 × 1802 pixels for a whole sheet, the carbon failed across the serial
@@ -368,10 +464,12 @@ push; a second deploy path would race it. The workflow carries a commented
   serial differ by a digit or two: Andrews, Griffith, Adams, Lee, Mays, Holland,
   Agee, Cole (James E), Hickman
 - The Bronze Star general orders number and award date. **Confirmed absent from
-  all 284 frames**, which leaves the battalion's general orders at NARA
+  all 284 frames.** Two places to look, both now identified by file designator —
+  see *The battalion's own records at College Park* below
 - The battalion's calibre, stated rather than inferred. `unit.weapon` reads the
   evidence as tractor-drawn medium or heavy artillery and says plainly that this
-  is an inference
+  is an inference. `FABN-153-0.1`, the battalion's own unit history, would settle
+  it, and there is a candidate reading already — see below
 - Re-read the 13 disputed grid references on the film. Each decodes cleanly to a
   place the same line contradicts, and a second reading would settle whether the
   letters or the place name is the error
@@ -379,6 +477,73 @@ push; a second deploy path would race it. The workflow carries a commented
   `data/map-series.json`
 - `data/gazetteer.json` has "Herzhausen, Hesse" at the wrong Herzhausen: the
   reference `G8188` puts the battery 14 km away, at the one on the Edersee
+- Resolve the 38 days whose station the gazetteer does not match — the four
+  Camp Pittsburgh spellings, "Nord de Guerre Zone (Germany)", "Hershausen
+  wG8188", "Enroute To Assembly Area", "Calas Staging Area". They carry no place
+  on the timeline and no weather. Rerun `weather:fetch` once they resolve
+
+## The battalion's own records at College Park
+
+The National Archives publish their whole catalogue as a bulk export on S3,
+`s3://nara-national-archives-catalog` (us-east-2, public, no credentials). It is
+JSONL by record group, and it carries a field the Catalog API does not search:
+`extractedText`, the OCR of every digitised page.
+
+```sh
+node tools/nara-catalog-grep.mjs 407 'FABN.?153-|FAGP.?79-0'
+```
+
+That streams RG 407 — 12.3 GB, about ninety seconds — and finds the index card
+for the battalion in the *Index to World War II Operations Reports*:
+
+```
+153rd Field Arty Bn
+  FABN-153-0.1    History 15 Nov 42 – Nov 45
+  FABN-153-0.3    A/A Rpt – Jun 44, Apr, Jun, Aug 45      (item 5071)
+  FABN-153-1.13   General Orders 1943–45
+```
+
+The same sweep gives the parent formations the site already names on other
+evidence, and the box list from the series description:
+
+```
+79th Field Artillery Group          Boxes 16576–16578
+  FAGP-79-0.1     Unit History Jun 1940 – Jun 1946
+  FAGP-79-0.3     After Action Rpt w/ Jnl May–Jul 45
+  FAGP-79-0.7     Unit Jnl Jul–Sep 44, May 45             (item 48786)
+  FAGP-79-1.13    General Orders 1942–43, 45–46
+
+32nd Field Artillery Brigade        Boxes 16480–16484
+  FABR-32-0.3     Rpt w/ Unit Journal 18 Jun 44 – May 45  (item 49524)
+  FABR-32-1.13    General Orders – 14 May 45              (item 49161)
+```
+
+**Box 15969** covers `FABN-148-0.3 June 1944` through `FABN-154-0.7 January 1946`,
+so all three battalion files sit in it. None of this is digitised; it is ordered
+or read on site at College Park. `FABN-153-1.13` and `FABR-32-1.13` are the two
+places the Bronze Star order should be.
+
+### One identification to settle first
+
+The same OCR sweep turns up a 153rd Field Artillery Battalion in the 1st Cavalry
+Division's own after-action reports:
+
+> On 15 November 1942 the 153d Field Artillery Battalion (105mm Howitzer)
+> Motorized was formed at Fort Bliss, Texas. Cadres were furnished from the 61st
+> and 82nd Field Artillery … This Battalion never returned to the 1st Cavalry
+> Division.
+
+and, separately, that it was "relieved from assignment to the 1st Cavalry
+Division and reassigned to the Third Army". The index card above dates our
+battalion's history from the same day, 15 November 1942, and ours was
+non-divisional in the ETO — which fits a battalion stripped off a division and
+handed to an army.
+
+Against that, the same sweep finds "153rd FA Bn" in XI Corps and 32nd Infantry
+Division records on Leyte in late 1944, when Battery C was in Germany. Those may
+be OCR errors for another number, or a second unit. **Do not carry the 105mm
+reading into `unit.weapon` until the identification is settled.** `FABN-153-0.1`
+settles it, and that is the first thing to read in Box 15969.
 
 ## History
 

@@ -24,6 +24,11 @@ front matter deciding which builder reads it. `public/data/timeline.json` holds
 destroyed and rebuilt by `npm run build:timeline`. Editing one in `timeline.json`
 loses the change on the next build. Edit the page file.
 
+`build:timeline` also writes `public/data/battery.json` — the daily strength line
+and every status change sorted by the clerk's own wording. It is wholly generated
+and holds nothing hand-authored, so it is rebuilt from scratch each run: edit the
+page files or the `ACTION_KINDS` table in the builder, never the JSON.
+
 **The build must never touch hand-authored events.** `build-timeline.mjs` filters
 on the `generated` flag alone. If you change that filter you can silently delete
 the discharge, the citation and Special Orders 66 — the parts with no other copy.
@@ -34,10 +39,18 @@ frame number and suppresses the generated one. Curated title and summary win.
 This is deliberate: the two efforts overlap on about a dozen dates and the point
 of the merge was to reconcile them, not to print both.
 
-**Gazetteer matching is whole-word, longest-match-first** (`placeFor()` in
-`tools/build-timeline.mjs`). A naive `includes()` made `"Ger"` (Ger, Manche)
-match every station string ending `(Germany)`, silently relocating three months
-of the war to Normandy. If you add a short place name, check the map afterwards.
+**Gazetteer matching is whole-word, longest-match-first**
+(`createPlaceResolver()` in `tools/lib/places.mjs`). A naive `includes()` made
+`"Ger"` (Ger, Manche) match every station string ending `(Germany)`, silently
+relocating three months of the war to Normandy. If you add a short place name,
+check the map afterwards. The timeline build and the weather fetch both resolve
+through this one function so a station cannot land in two places at once.
+
+**38 of the 495 days have a station the gazetteer does not resolve** — the
+Camp Pittsburgh spellings, "Nord de Guerre Zone (Germany)", "Hershausen wG8188",
+"Enroute To Assembly Area", "Calas Staging Area". They appear on the timeline
+with no place and get no weather. Fixing them means checking each against the
+map, not pattern-matching the spelling.
 
 **Two early-Normandy dates carry no place name in the station field** — the clerk
 wrote only "APO 230 France" and named the position in the record of events. These
@@ -56,6 +69,26 @@ about real people who died. Every dated claim carries its microfilm frame. If a
 reading is uncertain it stays uncertain (`pending`, `approximate`, `uncertain`,
 `status: "inferred"`). Never fill a gap from a secondary history — single-source
 fidelity to the documents is the whole premise.
+
+**The weather is the one thing on the site that is not from a document, and it
+is marked as such everywhere it appears.** ERA5 is a reanalysis: a modern model
+rerun over the sparse observations that survive from the 1940s, on a grid cell
+about 25 km across. The cards never mention the weather — the word appears
+nowhere in 284 frames — so nothing here corroborates the film or is corroborated
+by it. `weatherNode()` in `public/assets/lib/weather.js` emits the `modelled`
+tag as part of the line, not as an option a caller can drop; keep it that way.
+Three rules follow, and all three are already enforced:
+
+- **A modelled day names the place it was modelled for**, and `check:data` fails
+  if that place disagrees with the station the battery actually gave. A weather
+  line under the wrong sky is invisible on the page and wrong in the record.
+- **No weather is better than borrowed weather.** Days with an unresolved
+  station get none. Neither does the Atlantic crossing — the gazetteer holds one
+  nominal mid-ocean point for eight days of a moving convoy.
+- **No clock times are published.** Open-Meteo resolves Europe/London to UTC+1
+  for June 1944, but Britain was on British Double Summer Time, so its sunrise
+  is an hour out. Everything is fetched and stored in UTC, and only the *length*
+  of daylight is shown, which no timezone can distort.
 
 **Corrections are content.** The battery filed them constantly, sometimes
 retracting an entry months later. Preserved verbatim, not silently applied.
@@ -91,10 +124,40 @@ There is no template step, so a change to the shared chrome is a change to seven
 files including `404.html`. That is the price of having no build; do not
 introduce one to avoid it.
 
-`assets/style.css` is the whole design system and the only stylesheet. Three of
-the modules — `graph.js`, `record.js`, `sheets.js` — emit their own markup and
-are restyled entirely through the class names they already write. Do not edit
-them to change how something looks.
+`assets/style.css` is the whole design system and the only stylesheet. Five of
+the modules — `graph.js`, `record.js`, `sheets.js`, `battery.js`,
+`lib/weather.js` — emit their own markup and are restyled entirely through the
+class names they already write. Do not edit them to change how something looks.
+
+`battery.js` is the exception to that in one respect: its strength chart is sized
+in JavaScript, at the container's measured pixel width, and redrawn on resize. A
+fixed viewBox scaled by CSS renders an 11px label at 5px on a phone. Changing the
+chart's size is a change to that module, not to the stylesheet.
+
+`.weather` deliberately does not look like `.entry__verbatim`. The verbatim block
+carries a solid accent rule and is the document's own words; the weather line
+carries a dotted neutral rule and is not from the film at all. Making the two
+resemble each other would erase the only visual difference between what the
+battery wrote and what a model reconstructed.
+
+**The weather glyphs are the only icons on the site**, and there is no icon font
+to add one to. They live as a hidden `<symbol>` sprite that `lib/weather.js`
+injects once per page, referenced by `<use>` — the daily record draws a weather
+strip on 451 cards, and inlining the paths would put thousands of duplicate
+nodes in the DOM. Two things about them are easy to undo by accident:
+
+- **The sprite holds geometry only.** `fill`, `stroke` and `stroke-width` are
+  inherited properties set on `.wx__icon` in the stylesheet, which is how they
+  reach the shadow content. Moving them onto the `<symbol>` would win over the
+  CSS and put the drawing weight beyond the design system's reach.
+- **They are drawn on a 24 grid and shown at 15px**, so anything finer than
+  about three grid units vanishes. An earlier set had six-stroke snowflakes and
+  two-tick thermometers, and both read as grey smudges. The condition *word* sits
+  next to the glyph, so the glyph only needs a distinct silhouette.
+
+Nothing lighter than `--color-neutral-600` appears in the weather strip. That is
+the muted floor the rest of the site already uses; `neutral-500` on this paper is
+2.4:1, which would be a new low rather than a match.
 
 On the two pages with maps, `leaflet.css` is linked **before** `style.css`. Our
 rules for the tooltips, the zoom control and the tile grade are single-class
@@ -111,11 +174,31 @@ page; there is no dark variant and adding one is a design decision, not a fix.
 ## Verify after data changes
 
 ```sh
-npm run build:timeline && npm run build:roster && npm run check:data
+npm run build:timeline && npm run build:roster && npm run build:weather && npm run check:data
 ```
 
 `check:data` fails on structural errors and warns on strength figures that do not
 balance. It is the gate before `npm run deploy`.
+
+All four run offline. The only command that touches the network is
+`npm run weather:fetch`, and it is separate for that reason — see below.
+
+## Weather is fetched once, then built like anything else
+
+```sh
+npm run weather:fetch     # network; incremental, --force to refetch everything
+npm run build:weather     # offline; data/weather.json -> public/data/weather.json
+```
+
+`data/weather.json` is the committed record of what was pulled, faithful to the
+API response. `public/data/weather.json` is derived from it and is what the site
+serves. The war is over and these numbers will not change, so the browser never
+asks anyone for them — the site still makes exactly one kind of external
+request, and it is still CARTO map tiles.
+
+Rerun `weather:fetch` only after the gazetteer gains a place or the transcription
+gains a date; it skips everything already cached. It reads
+`public/data/morning-reports.json`, so run `build:timeline` first.
 
 ## Check the page, not just the build
 
@@ -235,6 +318,11 @@ so orders and cards cannot drift apart. `build-roster.mjs` skips
 `build-timeline.mjs` reads only those. Adding a page of either kind needs no
 build change.
 
+`tools/lib/places.mjs` does the same job for stations: one matcher, one slug,
+one alias table, used by `build-timeline.mjs` and `fetch-weather.mjs`. A second
+copy of that regex would let a station resolve to one village on the timeline and
+its neighbour in the weather, and nothing on the page would show it.
+
 Frame counts are computed from the files, never asserted in prose or constants.
 An earlier hardcoded 218 was wrong by eight frames for weeks.
 
@@ -258,3 +346,23 @@ Matching the orders against the morning reports on serial number has already
 corrected `35013798` from *Kolosxi* to *McKoski* and caught the same man written
 *Frehnheiser* and *Frohnheiser* on different cards. When the two sources disagree,
 that is a finding to adjudicate against the film — not noise to smooth over.
+
+`npm run check:serials` widens that to a source outside the film: the Army Serial
+Number Electronic File, the Archives' converted punch cards for every man
+entering the Army 1938–46, keyed on serial number. It reads 556 serials off the
+transcriptions and finds 49 where the man named is on a card one or two digits
+from the serial as read — which names the column to re-read. As a share of each
+source's checkable serials: twice-read Special Orders 66, 6 per cent; the morning
+reports, 10; Special Orders 226, 18.
+
+**Recompute those figures, never quote them.** They come from
+`data/nara-asn-crosscheck.json`, they move whenever a page is re-read or
+completed, and both the README and the p265 comments have carried a stale set
+already — one that disagreed with the JSON committed beside it.
+
+Nothing it finds is applied. Findings live in `data/nara-asn-crosscheck.json` and
+in the comments files for the pages they affect, as candidates for a re-read. A
+missing card means nothing — a sixth of the cards were lost before conversion —
+and the card file has its own error rate, which NARA measured and publishes.
+Neither source outranks the other; the film decides, and the tool says where to
+look.

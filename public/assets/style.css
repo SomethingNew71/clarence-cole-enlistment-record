@@ -146,6 +146,7 @@
 .card-meta,
 .colophon,
 .status,
+.weather,
 #record-list,
 #graph-status,
 #record-status {
@@ -797,16 +798,29 @@ figcaption {
   color: var(--color-neutral-600);
 }
 
-/* Campaign bars against the period named in the citation. */
-.campaigns-block {
+/* A second block inside a chapter, set off by a rule: the campaign bars under
+   the citation, the enlistment card under the discharge. */
+.campaigns-block,
+.subsection {
   margin-top: 56px;
   padding-top: 28px;
   border-top: 1px solid var(--color-divider);
 }
 
-.campaigns-block h3 {
+.campaigns-block h3,
+.subsection h3 {
   margin-bottom: 8px;
   font-size: 24px;
+}
+
+/* Where the card was filmed. The card itself is 80 fixed columns and the blanks
+   carry meaning, so it is not reproduced here — a proportional face would make a
+   grid look like a sentence. It is verbatim in data/nara-asn-crosscheck.json. */
+.card-source {
+  margin-top: 16px;
+  font-size: 13px;
+  font-style: italic;
+  color: var(--color-neutral-600);
 }
 
 .campaigns {
@@ -1054,6 +1068,82 @@ figcaption {
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--color-accent-600);
+}
+
+/* Modelled weather, on the timeline and on every card of the daily record.
+   Subordinate to everything it sits beside, and never without its tag: this is
+   the only line in either room that did not come off the film.
+
+   The dotted left rule is the tell. .entry__verbatim carries a solid accent
+   rule and that is the document's own voice; the two must not be confusable at
+   a glance, which is why this one is dotted and neutral rather than a lighter
+   shade of the same thing. */
+.weather {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px 14px;
+  margin: 10px 0 0;
+  padding-left: 10px;
+  border-left: 1px dotted var(--color-neutral-400);
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: var(--color-neutral-600);
+}
+
+/* Muted rather than loud. It appears on 451 cards, and an accent-coloured tag
+   on every one of them would drown "not yet verified", which is the tag a
+   reader actually has to act on. */
+.weather__tag {
+  border-style: dotted;
+  color: var(--color-neutral-600);
+  cursor: help;
+}
+
+/* One reading: glyph, then figure. Kept unbreakable so a wrap never leaves an
+   icon stranded at the end of a line from the number it belongs to. */
+.wx {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+}
+
+/* The sprite carries geometry only, so the drawing weight is set here. These
+   are inherited properties and reach the <use> shadow content on their own. */
+.wx__icon {
+  flex: none;
+  width: 15px;
+  height: 15px;
+  fill: none;
+  stroke: currentColor;
+  /* Drawn on a 24 grid at 15px, so a 1.5 stroke lands under a device pixel and
+     goes grey. 1.7 holds the line against an 11.5px serif. */
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  /* The wind glyph is rotated to its bearing, and has to turn about its middle
+     rather than the corner of the box. */
+  transform-origin: 50% 50%;
+  color: var(--color-neutral-600);
+}
+
+.wx__value {
+  color: var(--color-neutral-700);
+}
+
+/* Celsius beside Fahrenheit, and the qualifiers — "felt 10 °F", "gusting 18",
+   "over 7 h". Subordinate to the figure they qualify, but no lighter than
+   neutral-600: that is the muted floor the rest of the site already sits on
+   (.entry__meta, .card__foot, .card__place), and 500 on this paper is 2.4:1.
+   The hierarchy here is 700 against 600, not 700 against something unreadable. */
+.wx__aside,
+.wx__note {
+  color: var(--color-neutral-600);
+}
+
+.wx__note {
+  font-style: italic;
 }
 
 /* Event type is carried by the marker and the label after the date. Movement is
@@ -1816,4 +1906,166 @@ figcaption {
   .facts {
     gap: 12px 24px;
   }
+}
+
+/* ------------------------------------------------------------------- charts */
+/* Battery C's own figures. Drawn at the container's pixel width by battery.js,
+   so everything here sizes in px and means px. */
+
+.chart {
+  margin-top: 20px;
+  min-height: 200px;
+}
+
+.chart svg {
+  display: block;
+  overflow: visible;
+}
+
+.chart__grid {
+  stroke: var(--color-divider);
+  stroke-width: 1;
+}
+
+.chart__tick {
+  font-family: var(--font-body);
+  font-size: 11px;
+  fill: var(--color-neutral-600);
+}
+
+/* The men who were not present. A wash, not a block. */
+.chart__band {
+  fill: color-mix(in srgb, var(--color-text) 9%, transparent);
+}
+
+.chart__line {
+  fill: none;
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+/* The ring keeps the end dot legible where the two lines converge. */
+.chart__dot {
+  stroke: var(--color-bg);
+  stroke-width: 2;
+}
+
+.chart__endlabel {
+  font-family: var(--font-body);
+  font-size: 12px;
+  fill: var(--color-neutral-700);
+}
+
+.chart__cross {
+  stroke: var(--color-neutral-500);
+  stroke-width: 1;
+  pointer-events: none;
+}
+
+.legend__swatch--assigned,
+.legend__swatch--present {
+  height: 2px;
+  border-radius: 0;
+}
+
+.legend__swatch--assigned {
+  background: var(--color-sage-700);
+}
+
+.legend__swatch--present {
+  background: var(--color-accent);
+}
+
+.legend__swatch--absent {
+  background: color-mix(in srgb, var(--color-text) 9%, transparent);
+}
+
+/* Ranked bars, one hue: the job is magnitude, not identity. */
+.hbars {
+  margin-top: 20px;
+  display: grid;
+  gap: 10px;
+}
+
+.hbar {
+  display: grid;
+  grid-template-columns: minmax(0, 13rem) minmax(0, 1fr) 3ch;
+  align-items: center;
+  gap: 12px;
+}
+
+.hbar__label {
+  font-size: 14px;
+  color: var(--color-neutral-800);
+}
+
+.hbar__track {
+  display: block;
+  height: 14px;
+}
+
+.hbar__fill {
+  display: block;
+  height: 100%;
+  min-width: 2px;
+  background: var(--color-sage-600);
+  border-radius: 0 4px 4px 0;
+}
+
+.hbar__value {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--color-neutral-700);
+  text-align: right;
+  font-feature-settings: "tnum";
+}
+
+@media (width < 40rem) {
+  .hbar {
+    grid-template-columns: minmax(0, 1fr) 3ch;
+  }
+
+  .hbar__label {
+    grid-column: 1 / -1;
+  }
+}
+
+/* The nine of them. A list, because nine is not a chart. */
+.casualties {
+  margin: 20px 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 1px;
+  background: var(--color-divider);
+  border-block: 1px solid var(--color-divider);
+}
+
+.casualty {
+  background: var(--color-bg);
+  padding: 12px 0 12px 14px;
+  border-left: 2px solid var(--color-neutral-400);
+}
+
+.casualty--killed {
+  border-left-color: var(--color-accent-700);
+}
+
+.casualty__head {
+  font-family: var(--font-heading);
+  font-size: 19px;
+}
+
+.casualty__body {
+  margin-top: 2px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--color-neutral-800);
+}
+
+.casualty__source {
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--color-neutral-600);
 }

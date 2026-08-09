@@ -10,6 +10,8 @@ import { fileURLToPath } from "node:url";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const DATA = resolve(ROOT, "public/data/timeline.json");
+const WEATHER = resolve(ROOT, "public/data/weather.json");
+const REPORTS = resolve(ROOT, "public/data/morning-reports.json");
 
 const KINDS = new Set(["movement", "personnel", "combat", "admin", "award", "context"]);
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
@@ -114,13 +116,59 @@ for (const campaign of data.campaigns ?? []) {
   }
 }
 
+/* ------------------------------------------------------------------ weather */
+// Modelled weather is optional — the site renders without the file. What is not
+// optional is that a day, if present, names the place it was modelled for, and
+// that the place agrees with the record. A weather line under the wrong sky is
+// worse than no weather line, and nothing else on the page would reveal it.
+let weatherDays = 0;
+if (existsSync(WEATHER)) {
+  const weather = JSON.parse(readFileSync(WEATHER, "utf8"));
+  const cellKeys = new Set(Object.keys(weather.cells ?? {}));
+  weatherDays = Object.keys(weather.days ?? {}).length;
+
+  const reports = existsSync(REPORTS) ? JSON.parse(readFileSync(REPORTS, "utf8")) : null;
+  const stationFor = new Map((reports?.days ?? []).map((d) => [d.date, d.place]));
+
+  for (const [date, day] of Object.entries(weather.days ?? {})) {
+    const at = `weather ${date}`;
+    if (!ISO_DATE.test(date)) fail(`${at}: key must be YYYY-MM-DD`);
+    if (!day.place) {
+      fail(`${at}: no place — a modelled day must say what it was modelled for`);
+    } else if (!cellKeys.has(day.place)) {
+      fail(`${at}: place "${day.place}" has no grid cell`);
+    }
+    if (!day.condition) warn(`${at}: WMO code ${day.code} has no wording`);
+    if (day.tempMin != null && day.tempMax != null && day.tempMin > day.tempMax) {
+      fail(`${at}: minimum temperature above the maximum`);
+    }
+
+    // The join the two rooms make at render time, checked here instead of hoped for.
+    const station = stationFor.get(date);
+    const modelled = weather.cells?.[day.place]?.name;
+    if (station && modelled && station !== modelled) {
+      fail(`${at}: modelled for ${modelled}, but the battery was at ${station}`);
+    }
+  }
+
+  for (const [key, cell] of Object.entries(weather.cells ?? {})) {
+    if (!cell.name) fail(`weather cell "${key}": missing name`);
+    // 0.25 degrees of latitude is about 28 km, so a cell centre this far from
+    // the village means the wrong cell, not grid snapping.
+    if (cell.offsetKm != null && cell.offsetKm > 30) {
+      warn(`weather cell "${key}": grid cell is ${cell.offsetKm} km from the village`);
+    }
+  }
+}
+
 for (const w of warnings) console.warn(`warn  ${w}`);
 for (const e of errors) console.error(`error ${e}`);
 
 const pending = (data.events ?? []).filter((e) => e.pending).length;
 console.log(
   `${data.events?.length ?? 0} events (${pending} pending), ` +
-    `${placeKeys.size} places, ${errors.length} errors, ${warnings.length} warnings`,
+    `${placeKeys.size} places, ${weatherDays} modelled days, ` +
+    `${errors.length} errors, ${warnings.length} warnings`,
 );
 
 if (errors.length) process.exit(1);

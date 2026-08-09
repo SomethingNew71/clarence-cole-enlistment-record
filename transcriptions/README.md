@@ -76,6 +76,44 @@ Keep them factual and keep the uncertainty. A comment saying "not established" i
 worth more than a guess, and the point of writing one is to stop the next reader
 repeating an investigation that has already been done.
 
+## A second reading of every serial number
+
+The Archives hold a punch card for nearly every man who entered the Army between
+1938 and 1946, converted to a data file of 9,200,232 records keyed on serial
+number: the Army Serial Number Electronic File, NARA ID 1263923, Record Group 64.
+
+```sh
+npm run check:serials -- --fetch   # 185 MB down, 837 MB on disk, once
+npm run check:serials              # report
+npm run check:serials -- --write   # report and rewrite data/nara-asn-crosscheck.json
+```
+
+The file goes to `.work/nara/`, which is gitignored. The result is committed as
+`data/nara-asn-crosscheck.json` so the finding can be read without the download.
+
+A serial read off the film either lands on a card bearing the same name or it
+does not. When it does not, the tool searches the card file by name; the man is
+usually there one digit away, which names the column to re-read. Findings are
+recorded in the comments files for the pages they affect and nowhere applied —
+a candidate is a question to put back to the film, not an answer.
+
+Two limits, both real:
+
+- **A missing card is not a disagreement.** About a sixth of the cards were lost
+  before the Archives converted them.
+- **The card file has its own errors.** NARA compared 377 records against the
+  original punch cards and found 5 serials and 18 names wrong.
+
+The tool measures how much a near miss is worth by asking the same question of
+the serials the cards confirm: of 187 such serials given with a full name, 2
+also have a card of the same name within two digits. A near miss on a rare name
+is close to conclusive; one on a common name is not, and the count of men of
+that name in the file is reported beside every candidate for that reason.
+
+Where the film gives a surname alone — common on the early morning-report cards
+— the same measurement comes out at 5 of 11, so no candidate is offered for
+those rows. The disagreement is still reported; the guess is not.
+
 ## Why pages, and why duplicates matter
 
 The film photographs some pages twice. Those frames get their own file with

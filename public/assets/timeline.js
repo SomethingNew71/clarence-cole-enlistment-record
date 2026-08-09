@@ -7,6 +7,7 @@
  */
 
 import { el, formatDate, loadJSON } from "/assets/lib/format.js";
+import { loadWeather, weatherFor, weatherNode } from "/assets/lib/weather.js";
 
 const KIND_LABELS = {
   movement: "Movement",
@@ -18,14 +19,16 @@ const KIND_LABELS = {
 };
 
 async function main() {
-  const data = await loadJSON("/data/timeline.json");
+  // Weather is an addition to the record, not part of it, so it loads alongside
+  // and a failure leaves the timeline intact.
+  const [data, weather] = await Promise.all([loadJSON("/data/timeline.json"), loadWeather()]);
   const entries = mergedEntries(data);
   const list = document.getElementById("timeline-list");
   const count = document.getElementById("entry-count");
 
   const draw = (filter) => {
     const shown = filter === "all" ? entries : entries.filter((e) => e.kind === filter);
-    list.replaceChildren(...shown.map(entryNode));
+    list.replaceChildren(...shown.map((entry) => entryNode(entry, weather)));
     if (count) {
       count.textContent = `${shown.length} ${shown.length === 1 ? "entry" : "entries"}`;
     }
@@ -47,6 +50,7 @@ function mergedEntries({ events, context, places, sources }) {
   const titleOf = (id) => sources.find((s) => s.id === id)?.title ?? null;
   const unitEntries = events.map((e) => ({
     ...e,
+    placeKey: e.place ?? null,
     place: e.place ? places[e.place] : null,
     sourceTitle: e.source ? titleOf(e.source.id) : null,
     corroborationTitle: e.corroboration ? titleOf(e.corroboration.id) : null,
@@ -55,7 +59,7 @@ function mergedEntries({ events, context, places, sources }) {
   return [...unitEntries, ...contextEntries].sort((a, b) => a.date.localeCompare(b.date));
 }
 
-function entryNode(entry) {
+function entryNode(entry, weather) {
   const li = el("li", `entry entry--${entry.kind}`);
   if (entry.pending) li.classList.add("entry--pending");
 
@@ -74,6 +78,12 @@ function entryNode(entry) {
   if (entry.summary) li.append(el("p", "entry__summary", entry.summary));
   if (entry.dateNote) li.append(el("p", "entry__note", entry.dateNote));
   if (entry.verbatim) li.append(el("blockquote", "entry__verbatim", entry.verbatim));
+
+  // After the card's own words, never inside them: the quote is the document,
+  // this is not.
+  const day = weatherFor(weather, entry.date, { placeKey: entry.placeKey });
+  const sky = day ? weatherNode(day, { className: "weather entry__weather" }) : null;
+  if (sky) li.append(sky);
 
   const meta = metaNode(entry);
   if (meta) li.append(meta);

@@ -11,10 +11,13 @@
     "build:roster": "node tools/build-roster.mjs",
     "build:timeline": "node tools/build-timeline.mjs",
     "build:maps": "node tools/build-map-sheets.mjs",
+    "build:weather": "node tools/build-weather.mjs",
     "derive:grids": "node tools/derive-grid-squares.mjs",
     "check:data": "node tools/check-data.mjs",
+    "check:serials": "node tools/nara-asn-crosscheck.mjs",
     "maps:fetch": "node tools/fetch-maps.mjs",
-    "maps:upload": "node tools/upload-maps-r2.mjs"
+    "maps:upload": "node tools/upload-maps-r2.mjs",
+    "weather:fetch": "node tools/fetch-weather.mjs"
   },
   "devDependencies": {
     "wrangler": "^4.42.0"

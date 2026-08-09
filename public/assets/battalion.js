@@ -1,14 +1,21 @@
 /**
  * The battalion room.
  *
- * The network itself is graph.js, unchanged; this module wires its controls and
- * writes the two notes underneath — whether Cole is on either order, and which
- * pages of the film have been read twice.
+ * Battery C's strength and status changes come first, from battery.js; the
+ * network of the two 1945 orders follows. The network itself is graph.js,
+ * unchanged; this module wires its controls and writes the two notes underneath
+ * — whether Cole is on either order, and which pages of the film have been read
+ * twice.
  */
 
 import { loadJSON } from "/assets/lib/format.js";
+import { renderBattery } from "/assets/battery.js";
 
 async function main() {
+  // Battery C's own figures first — they are the unit the rest of the page is
+  // about, and they do not depend on the network finishing its layout.
+  await renderBattery();
+
   const host = document.getElementById("roster-graph");
   const mod = await import("/assets/graph.js");
   const { svg, count, pages } = await mod.renderRosterGraph(host);

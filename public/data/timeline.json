@@ -48,7 +48,76 @@
     "source": {
       "id": "separation-record"
     },
-    "pending": []
+    "pending": [],
+    "enlistmentCard": {
+      "source": {
+        "id": "enlistment-card"
+      },
+      "raw": "36106875COLE CLARENCE J          21576228210341P   8BI 00 0   06206148826701627 10345.96 ",
+      "film": "Army Serial Number Electronic File, roll 1034, frame 5.96.",
+      "fields": [
+        [
+          "Serial number",
+          "36106875"
+        ],
+        [
+          "Name",
+          "COLE CLARENCE J"
+        ],
+        [
+          "Residence",
+          "Tuscola County, Michigan (state 62, county 157)"
+        ],
+        [
+          "Place of enlistment",
+          "Detroit, Michigan (6228)"
+        ],
+        [
+          "Date of enlistment",
+          "21 March 1941"
+        ],
+        [
+          "Grade",
+          "Private (8)"
+        ],
+        [
+          "Arm or service",
+          "Branch Immaterial (BI 00) — a selectee not yet assigned to an arm"
+        ],
+        [
+          "Component",
+          "Selectee (7)"
+        ],
+        [
+          "Year of birth",
+          "1906"
+        ],
+        [
+          "Nativity",
+          "Michigan (62)"
+        ],
+        [
+          "Racial group and citizenship",
+          "White, citizen (1)"
+        ],
+        [
+          "Education",
+          "4 years of high school (4)"
+        ],
+        [
+          "Marital status",
+          "Single, without dependents (6)"
+        ],
+        [
+          "Height and weight",
+          "70 in, 162 lb"
+        ],
+        [
+          "Civilian occupation",
+          "Code 882. The code list NARA publishes with the file does not run to it."
+        ]
+      ]
+    }
   },
   "decorations": [
     {
@@ -179,7 +248,7 @@
         "Gun tubes were replaced after roughly 780 service rounds per gun — guns numbered 51 and 52 (frame 128).",
         "It is non-divisional artillery, held at First Army and lent to divisions, which in 1944-45 means corps-level medium or heavy pieces."
       ],
-      "caveat": "No morning report in frames 1-218 states the calibre. This is an inference from how the battery moved and was maintained, not a documented fact, and should not be cited as one."
+      "caveat": "No morning report states the calibre. All 284 frames have been read and none names a gun. This is an inference from how the battery moved and was maintained, not a documented fact, and should not be cited as one. The battalion's own unit history, FABN-153-0.1 at the National Archives at College Park, would settle it."
     }
   },
   "sources": [
@@ -195,6 +264,13 @@
       "citation": "WD AGO Form 53-55, Honorable Discharge, 22 October 1945. Sgt Clarence J. Cole, 36106875.",
       "note": "Family papers. Confirms the sailing date independently of the morning reports.",
       "document": "separation-record"
+    },
+    {
+      "id": "enlistment-card",
+      "title": "Army enlistment card, Clarence J. Cole",
+      "citation": "WD AGO Form 372. Electronic Army Serial Number Merged File, ca. 1938–1946, NARA ID 1263923, Record Group 64. Roll 1034, frame 5.96.",
+      "note": "One punch card per man entering the Army, filmed on 1,586 rolls and converted to a data file of 9,200,232 records. The card is a machine reading of a punch card, not the card itself; NARA compared 377 records against the originals and found errors in 5 serial numbers and 18 names.",
+      "url": "https://catalog.archives.gov/id/1263923"
     },
     {
       "id": "bronze-star-citation",
@@ -229,6 +305,13 @@
       "citation": "Combined Arms Research Library digital collections, US Army Command and General Staff College, item p15040coll6/4713.",
       "note": "A compiled order of battle rather than a unit record. Good enough to place the battalion on one date; not a substitute for the battalion's own after-action reports.",
       "url": "https://cgsc.contentdm.oclc.org/digital/collection/p15040coll6/id/4713"
+    },
+    {
+      "id": "era5",
+      "title": "ERA5 reanalysis weather, via the Open-Meteo Historical Weather API",
+      "citation": "ECMWF ERA5 global reanalysis, approximately 25 km grid, retrieved through archive-api.open-meteo.com. Open-Meteo data under CC BY 4.0; ERA5 under the Copernicus licence.",
+      "note": "Not a record of the war. A modern weather model rerun over the sparse observations that survive from the 1940s, reported for a grid cell up to 16 km from the village the clerk named. No morning-report card records the weather, so nothing here corroborates or is corroborated by the film. It is marked modelled everywhere it appears.",
+      "url": "https://open-meteo.com/en/docs/historical-weather-api"
     }
   ],
   "documents": [
